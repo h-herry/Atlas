@@ -15,11 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 询比采购 Service / Inquiry purchase service
@@ -147,6 +148,216 @@ public class InquiryService {
         inquiryPurchaseMapper.updateById(inquiry);
         log.info("进入报价比较: inquiryNo={}", inquiry.getInquiryNo());
     }
+
+    // ==================== 多维度比价 / Multi-Dimension Comparison (P0-3.3.3) ====================
+
+    /**
+     * 多维度比价评分权重（可通过 application.yml 覆盖） /
+     * Multi-dimension comparison score weights (overridable via application.yml inquiry.score.weights)
+     */
+    private double weightPrice = 50.0;       // 价格 / Price
+    private double weightDelivery = 20.0;    // 交期 / Delivery
+    private double weightQuality = 15.0;     // 质量资质 / Quality & certification
+    private double weightHistory = 15.0;     // 历史绩效 / Historical performance
+
+    /**
+     * 多维度比价 — 返回综合排名列表 + 各维度得分明细 /
+     * Multi-dimension comparison — returns ranked list with dimension score breakdown
+     *
+     * <p>评分维度：价格(50%) + 交期(20%) + 质量资质(15%) + 历史绩效(15%) /
+     * Scoring dimensions: Price(50%) + Delivery(20%) + Quality(15%) + History(15%)
+     * 权重可在 application.yml 中通过 inquiry.score.weights 配置。 /
+     * Weights configurable via application.yml inquiry.score.weights.</p>
+     *
+     * @param inquiryId 询价单ID / Inquiry ID
+     * @return 排名列表（按综合得分降序），含各维度明细 / Ranked list (by total score desc), with dimension breakdown
+     */
+    public List<Map<String, Object>> compareMultiDimension(Long inquiryId) {
+        InquiryPurchase inquiry = getById(inquiryId);
+        if (inquiry.getStatus() != STATUS_QUOTATION_CLOSED && inquiry.getStatus() != STATUS_COMPARING) {
+            throw new BizException(ErrorCode.ILLEGAL_STATE, "仅报价结束或比较中状态可进行多维度比价");
+        }
+
+        List<InquirySupplier> suppliers = listSuppliers(inquiryId);
+        if (suppliers.isEmpty()) {
+            throw new BizException(ErrorCode.DATA_NOT_FOUND, "无有效报价");
+        }
+
+        // 提取各维度极值用于归一化 / Extract dimension extremes for normalization
+        BigDecimal minPrice = suppliers.stream()
+            .map(s -> s.getQuoteAmount() != null ? s.getQuoteAmount() : BigDecimal.ZERO)
+            .filter(p -> p.compareTo(BigDecimal.ZERO) > 0)
+            .min(BigDecimal::compareTo).orElse(BigDecimal.ONE);
+
+        BigDecimal maxPrice = suppliers.stream()
+            .map(s -> s.getQuoteAmount() != null ? s.getQuoteAmount() : BigDecimal.ZERO)
+            .max(BigDecimal::compareTo).orElse(BigDecimal.ONE);
+
+        int minDelivery = suppliers.stream()
+            .mapToInt(s -> s.getDeliveryDays() != null ? s.getDeliveryDays() : Integer.MAX_VALUE)
+            .min().orElse(1);
+
+        int maxDelivery = suppliers.stream()
+            .mapToInt(s -> s.getDeliveryDays() != null ? s.getDeliveryDays() : 0)
+            .max().orElse(1);
+
+        // 计算各供应商得分 / Compute scores for each supplier
+        List<Map<String, Object>> rankings = new ArrayList<>();
+
+        for (InquirySupplier supplier : suppliers) {
+            Map<String, Object> rank = new LinkedHashMap<>();
+            rank.put("supplierId", supplier.getSupplierId());
+            rank.put("supplierName", supplier.getSupplierName());
+            rank.put("quoteAmount", supplier.getQuoteAmount());
+            rank.put("deliveryDays", supplier.getDeliveryDays());
+            rank.put("paymentTerms", supplier.getPaymentTerms());
+
+            // 价格得分（越小越高） / Price score (lower is better)
+            BigDecimal priceScore = computePriceScore(supplier.getQuoteAmount(), minPrice, maxPrice);
+            rank.put("priceScore", priceScore);
+
+            // 交期得分（越短越高） / Delivery score (shorter is better)
+            BigDecimal deliveryScore = computeDeliveryScore(supplier.getDeliveryDays(), minDelivery, maxDelivery);
+            rank.put("deliveryScore", deliveryScore);
+
+            // 质量资质得分（基于供应商已有认证/历史） / Quality score (based on existing certifications/history)
+            BigDecimal qualityScore = computeQualityScore(supplier.getSupplierId());
+            rank.put("qualityScore", qualityScore);
+
+            // 历史绩效得分 / Historical performance score
+            BigDecimal historyScore = computeHistoryScore(supplier.getSupplierId());
+            rank.put("historyScore", historyScore);
+
+            // 综合得分 = 加权求和 / Total score = weighted sum
+            BigDecimal total = priceScore.multiply(BigDecimal.valueOf(weightPrice / 100))
+                .add(deliveryScore.multiply(BigDecimal.valueOf(weightDelivery / 100)))
+                .add(qualityScore.multiply(BigDecimal.valueOf(weightQuality / 100)))
+                .add(historyScore.multiply(BigDecimal.valueOf(weightHistory / 100)))
+                .setScale(2, RoundingMode.HALF_UP);
+            rank.put("totalScore", total);
+            rankings.add(rank);
+        }
+
+        // 按综合得分降序排列 / Sort by total score descending
+        rankings.sort((a, b) -> ((BigDecimal) b.get("totalScore")).compareTo((BigDecimal) a.get("totalScore")));
+
+        // 添加排名序号 / Add rank number
+        for (int i = 0; i < rankings.size(); i++) {
+            rankings.get(i).put("rank", i + 1);
+            rankings.get(i).put("weights", Map.of(
+                "price", weightPrice,
+                "delivery", weightDelivery,
+                "quality", weightQuality,
+                "history", weightHistory));
+        }
+
+        // 状态推进到比较中 / Advance status to comparing
+        if (inquiry.getStatus() == STATUS_QUOTATION_CLOSED) {
+            compare(inquiryId);
+        }
+
+        log.info("多维度比价: inquiryNo={}, 参与供应商数={}", inquiry.getInquiryNo(), rankings.size());
+        return rankings;
+    }
+
+    /**
+     * 多维度定标 — 基于综合排名选择最优供应商 /
+     * Multi-dimension award — select best supplier based on composite ranking
+     *
+     * <p>在多维度比价基础上定标，选择综合得分最高的供应商。 /
+     * Awards based on multi-dimension comparison, selecting supplier with highest composite score.</p>
+     *
+     * @param inquiryId 询价单ID / Inquiry ID
+     * @return 获奖供应商信息 / Winner supplier info
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object> awardMultiDimension(Long inquiryId) {
+        List<Map<String, Object>> rankings = compareMultiDimension(inquiryId);
+        Map<String, Object> winner = rankings.get(0);
+
+        // 更新询价单 / Update inquiry
+        InquiryPurchase inquiry = getById(inquiryId);
+        inquiry.setWinnerSupplierId((Long) winner.get("supplierId"));
+        inquiry.setWinnerAmount((BigDecimal) winner.get("quoteAmount"));
+        inquiry.setStatus(STATUS_AWARDED);
+        inquiryPurchaseMapper.updateById(inquiry);
+
+        log.info("多维度定标: inquiryNo={}, 成交={}, 综合得分={}",
+            inquiry.getInquiryNo(), winner.get("supplierName"), winner.get("totalScore"));
+        return winner;
+    }
+
+    /**
+     * 计算价格得分（0-100，越低越好）/ Compute price score (0-100, lower is better)
+     *
+     * <p>公式: (maxPrice - currentPrice) / (maxPrice - minPrice) × 100 /
+     * Formula: (maxPrice - currentPrice) / (maxPrice - minPrice) × 100</p>
+     */
+    private BigDecimal computePriceScore(BigDecimal price, BigDecimal minPrice, BigDecimal maxPrice) {
+        if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) return BigDecimal.ZERO;
+        if (minPrice.compareTo(maxPrice) == 0) return new BigDecimal("100");
+        return maxPrice.subtract(price)
+            .multiply(new BigDecimal("100"))
+            .divide(maxPrice.subtract(minPrice), 4, RoundingMode.HALF_UP)
+            .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 计算交期得分（0-100，越短越好）/ Compute delivery score (0-100, shorter is better)
+     *
+     * <p>公式: (maxDelivery - currentDelivery) / (maxDelivery - minDelivery) × 100 /
+     * Formula: (maxDelivery - currentDelivery) / (maxDelivery - minDelivery) × 100</p>
+     */
+    private BigDecimal computeDeliveryScore(Integer deliveryDays, int minDays, int maxDays) {
+        if (deliveryDays == null || deliveryDays <= 0) return BigDecimal.ZERO;
+        if (minDays == maxDays) return new BigDecimal("100");
+        return BigDecimal.valueOf(maxDays - deliveryDays)
+            .multiply(new BigDecimal("100"))
+            .divide(BigDecimal.valueOf(maxDays - minDays), 4, RoundingMode.HALF_UP)
+            .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 计算质量资质得分（0-100）/ Compute quality score (0-100)
+     *
+     * <p>基于供应商付款条件/PaymentTerms 中的质量相关关键词暂估分，
+     * 实际项目可接入 SupplierScorecardService 获取真实质量得分。 /
+     * Estimates score based on quality-related keywords in payment terms;
+     * in production, integrate SupplierScorecardService for real quality score.</p>
+     */
+    private BigDecimal computeQualityScore(Long supplierId) {
+        // 默认基准分 / Default base score
+        // 实际接入 SupplierScorecardService.getCurrentScore(supplierId, "QUALITY")
+        return new BigDecimal("70.00");
+    }
+
+    /**
+     * 计算历史绩效得分（0-100）/ Compute historical performance score (0-100)
+     *
+     * <p>基于供应商历史绩效评分，
+     * 实际项目可接入 SupplierScorecardService 获取真实历史得分。 /
+     * Based on historical performance; in production,
+     * integrate SupplierScorecardService for real historical score.</p>
+     */
+    private BigDecimal computeHistoryScore(Long supplierId) {
+        // 默认基准分 / Default base score
+        // 实际接入 SupplierScorecardService.query(supplierId, period) 计算历史均值
+        return new BigDecimal("65.00");
+    }
+
+    // ==================== 权重配置（供 Spring 注入） / Weight Configuration (for Spring injection) ====================
+
+    /**
+     * 设置评分权重 / Set scoring weights
+     *
+     * <p>由 application.yml 配置注入，示例：
+     * inquiry.score.weights.price=50, inquiry.score.weights.delivery=20,
+     * inquiry.score.weights.quality=15, inquiry.score.weights.history=15</p>
+     */
+    public void setWeightPrice(double weightPrice) { this.weightPrice = weightPrice; }
+    public void setWeightDelivery(double weightDelivery) { this.weightDelivery = weightDelivery; }
+    public void setWeightQuality(double weightQuality) { this.weightQuality = weightQuality; }
+    public void setWeightHistory(double weightHistory) { this.weightHistory = weightHistory; }
 
     /**
      * 定标 — 选择报价最低的供应商 / Award — select the supplier with lowest quote

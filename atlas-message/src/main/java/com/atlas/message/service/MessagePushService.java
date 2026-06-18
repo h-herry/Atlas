@@ -4,7 +4,10 @@ import com.atlas.common.websocket.MessageTemplate;
 import com.atlas.message.dto.PushRequest;
 import com.atlas.message.mail.service.MailService;
 import com.atlas.message.mail.template.MailTemplateEnum;
+import com.atlas.message.mapper.DeadMsgRecordMapper;
+import com.atlas.message.model.DeadMsgRecord;
 import com.atlas.message.model.Message;
+import com.atlas.message.model.MsgChannelPreference;
 import com.atlas.message.sms.service.SmsService;
 import com.atlas.message.sms.template.SmsTemplateEnum;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +64,8 @@ public class MessagePushService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final MailService mailService;
     private final SmsService smsService;
+    private final DeadMsgRecordMapper deadMsgRecordMapper;
+    private final MsgChannelPreferenceService channelPreferenceService;
 
     /**
      * Redis Pub/Sub 频道（跨实例消息广播） / Redis Pub/Sub channel (cross-instance message broadcast)
@@ -82,21 +87,38 @@ public class MessagePushService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void push(PushRequest request) {
+        // 0. 渠道偏好过滤（P1-3.9.5）/ Channel preference filtering
+        boolean wsEnabled = true;  // WebSocket is always default
+        boolean mailEnabled = request.isMailNotify();
+        boolean smsEnabled = request.isSmsNotify();
+
+        if (request.getUserId() != null) {
+            MsgChannelPreference pref = channelPreferenceService.getByUserAndEvent(
+                    request.getUserId(), request.getType());
+            if (pref != null) {
+                wsEnabled = pref.getWsEnabled() == null || pref.getWsEnabled() == 1;
+                mailEnabled = mailEnabled && (pref.getMailEnabled() != null && pref.getMailEnabled() == 1);
+                smsEnabled = smsEnabled && (pref.getSmsEnabled() != null && pref.getSmsEnabled() == 1);
+            }
+        }
+
         // 1. 构建并持久化消息 / Build and persist message
         Message msg = buildMessage(request);
         messageService.save(msg);
         Map<String, Object> payload = buildPayload(msg);
 
-        // 2. WebSocket 实时推送（所有消息默认通道）/ WebSocket real-time push (default channel for all messages)
-        pushViaWebSocket(request, payload);
+        // 2. WebSocket 实时推送（所有消息默认通道，受偏好过滤）/ WebSocket real-time push (default, filtered by preference)
+        if (wsEnabled) {
+            pushViaWebSocket(request, payload);
+        }
 
-        // 3. 邮件通道（重要消息，异步）/ Mail channel (important messages, async)
-        if (request.isMailNotify()) {
+        // 3. 邮件通道（重要消息，异步，受偏好过滤）/ Mail channel (important, async, filtered by preference)
+        if (mailEnabled) {
             pushViaMail(request);
         }
 
-        // 4. 短信通道（紧急消息，异步）/ SMS channel (urgent messages, async)
-        if (request.isSmsNotify()) {
+        // 4. 短信通道（紧急消息，异步，受偏好过滤）/ SMS channel (urgent, async, filtered by preference)
+        if (smsEnabled) {
             pushViaSms(request);
         }
 
@@ -179,70 +201,134 @@ public class MessagePushService {
     }
 
     /**
-     * 邮件通道推送（异步）/ Mail channel push (async)
+     * 邮件通道推送（异步 + 重试 + 死信） / Mail channel push (async + retry + dead-letter)
+     *
+     * <p>重试策略: 失败后间隔 1min / 5min / 15min 重试，最多 3 次；3 次后移入 dead_msg_record。 /
+     * Retry strategy: retry after 1min / 5min / 15min intervals, max 3 retries; move to dead_msg_record after 3.</p>
      */
     @Async
     public void pushViaMail(PushRequest request) {
-        try {
-            String email = request.getEmail();
-            if (email == null || email.isBlank()) {
-                log.warn("邮件发送跳过，收件人邮箱为空: supplierId={}, type={}",
-                        request.getSupplierId(), request.getType());
-                return;
+        String email = request.getEmail();
+        if (email == null || email.isBlank()) {
+            log.warn("邮件发送跳过，收件人邮箱为空: supplierId={}, type={}",
+                    request.getSupplierId(), request.getType());
+            return;
+        }
+
+        String templateName = resolveMailTemplateName(request);
+        if (templateName == null) {
+            log.warn("邮件发送跳过，未找到匹配的邮件模板: type={}", request.getType());
+            return;
+        }
+
+        int maxRetries = 3;
+        long[] delays = {60_000, 300_000, 900_000}; // 1min / 5min / 15min
+
+        for (int retry = 0; retry <= maxRetries; retry++) {
+            try {
+                Map<String, Object> variables = buildMailVariables(request);
+                MailTemplateEnum template = MailTemplateEnum.fromCode(templateName);
+                String subject = template != null ? template.getTitle() : request.getTitle();
+
+                mailService.sendTemplateMail(email, subject, templateName, variables);
+                log.info("邮件已发送: to={}, template={}, type={}, retry={}", email, templateName, request.getType(), retry);
+                return; // 成功则退出 / Exit on success
+            } catch (Exception e) {
+                log.error("邮件发送失败 (重试 {}/{}): to={}, type={}, title={}",
+                        retry, maxRetries, email, request.getType(), request.getTitle(), e);
+
+                if (retry < maxRetries) {
+                    try {
+                        Thread.sleep(delays[retry]);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                } else {
+                    // 3 次重试后移入死信表 / Move to dead-letter table after 3 retries
+                    saveToDeadQueue(request, "MAIL", email, retry, e.getMessage());
+                }
             }
-
-            // 确定邮件模板名称 / Determine mail template name
-            String templateName = resolveMailTemplateName(request);
-            if (templateName == null) {
-                log.warn("邮件发送跳过，未找到匹配的邮件模板: type={}", request.getType());
-                return;
-            }
-
-            // 构建模板变量 / Build template variables
-            Map<String, Object> variables = buildMailVariables(request);
-
-            // 获取邮件标题 / Get mail subject
-            MailTemplateEnum template = MailTemplateEnum.fromCode(templateName);
-            String subject = template != null ? template.getTitle() : request.getTitle();
-
-            // 发送邮件 / Send mail
-            mailService.sendTemplateMail(email, subject, templateName, variables);
-            log.info("邮件已发送: to={}, template={}, type={}", email, templateName, request.getType());
-        } catch (Exception e) {
-            log.error("邮件发送失败: to={}, type={}, title={}", request.getEmail(), request.getType(),
-                    request.getTitle(), e);
         }
     }
 
     /**
-     * 短信通道推送（异步）/ SMS channel push (async)
+     * 短信通道推送（异步 + 重试 + 死信） / SMS channel push (async + retry + dead-letter)
+     *
+     * <p>重试策略: 失败后间隔 1min / 5min / 15min 重试，最多 3 次；3 次后移入 dead_msg_record。 /
+     * Retry strategy: retry after 1min / 5min / 15min intervals, max 3 retries; move to dead_msg_record after 3.</p>
      */
     @Async
     public void pushViaSms(PushRequest request) {
+        String phone = request.getPhone();
+        if (phone == null || phone.isBlank()) {
+            log.warn("短信发送跳过，收件人手机号为空: supplierId={}, type={}",
+                    request.getSupplierId(), request.getType());
+            return;
+        }
+
+        String templateCode = resolveSmsTemplateCode(request);
+        if (templateCode == null) {
+            log.warn("短信发送跳过，未找到匹配的短信模板: type={}", request.getType());
+            return;
+        }
+
+        int maxRetries = 3;
+        long[] delays = {60_000, 300_000, 900_000}; // 1min / 5min / 15min
+
+        for (int retry = 0; retry <= maxRetries; retry++) {
+            try {
+                Map<String, String> params = buildSmsParams(request);
+                smsService.sendSms(phone, templateCode, params);
+                log.info("短信已发送: phone={}, templateCode={}, type={}, retry={}", phone, templateCode, request.getType(), retry);
+                return; // 成功则退出 / Exit on success
+            } catch (Exception e) {
+                log.error("短信发送失败 (重试 {}/{}): phone={}, type={}, title={}",
+                        retry, maxRetries, phone, request.getType(), request.getTitle(), e);
+
+                if (retry < maxRetries) {
+                    try {
+                        Thread.sleep(delays[retry]);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                } else {
+                    // 3 次重试后移入死信表 / Move to dead-letter table after 3 retries
+                    saveToDeadQueue(request, "SMS", phone, retry, e.getMessage());
+                }
+            }
+        }
+    }
+
+    /**
+     * 将失败消息持久化到死信表 / Persist failed message to dead-letter table
+     *
+     * @param request   原始推送请求 / Original push request
+     * @param channel   推送通道 (MAIL / SMS) / Push channel
+     * @param recipient 接收人地址 / Recipient address
+     * @param retries   已重试次数 / Retries performed
+     * @param errorMsg  错误信息 / Error message
+     */
+    private void saveToDeadQueue(PushRequest request, String channel, String recipient, int retries, String errorMsg) {
         try {
-            String phone = request.getPhone();
-            if (phone == null || phone.isBlank()) {
-                log.warn("短信发送跳过，收件人手机号为空: supplierId={}, type={}",
-                        request.getSupplierId(), request.getType());
-                return;
-            }
-
-            // 确定短信模板编码 / Determine SMS template code
-            String templateCode = resolveSmsTemplateCode(request);
-            if (templateCode == null) {
-                log.warn("短信发送跳过，未找到匹配的短信模板: type={}", request.getType());
-                return;
-            }
-
-            // 构建模板参数 / Build template parameters
-            Map<String, String> params = buildSmsParams(request);
-
-            // 发送短信 / Send SMS
-            smsService.sendSms(phone, templateCode, params);
-            log.info("短信已发送: phone={}, templateCode={}, type={}", phone, templateCode, request.getType());
+            DeadMsgRecord dead = new DeadMsgRecord();
+            dead.setOriginalMsgId(request.getRelatedId());
+            dead.setSupplierId(request.getSupplierId());
+            dead.setUserId(request.getUserId());
+            dead.setTitle(request.getTitle());
+            dead.setContent(request.getContent());
+            dead.setType(request.getType());
+            dead.setChannel(channel);
+            dead.setRecipient(recipient);
+            dead.setRetryCount(retries);
+            dead.setLastError(errorMsg);
+            dead.setFailedAt(LocalDateTime.now());
+            dead.setCreatedAt(LocalDateTime.now());
+            deadMsgRecordMapper.insert(dead);
+            log.warn("消息已移入死信队列: channel={}, recipient={}, retries={}", channel, recipient, retries);
         } catch (Exception e) {
-            log.error("短信发送失败: phone={}, type={}, title={}", request.getPhone(), request.getType(),
-                    request.getTitle(), e);
+            log.error("死信记录写入失败（最终兜底）: channel={}, recipient={}", channel, recipient, e);
         }
     }
 
@@ -277,6 +363,7 @@ public class MessagePushService {
         msg.setRelatedId(request.getRelatedId());
         msg.setRelatedType(request.getRelatedType());
         msg.setChannel(request.getChannel() != null ? request.getChannel() : "WEBSOCKET");
+        msg.setPriority(request.getPriority() != null ? request.getPriority() : 2);
         msg.setIsRead(0);
         msg.setCreatedAt(LocalDateTime.now());
         return msg;

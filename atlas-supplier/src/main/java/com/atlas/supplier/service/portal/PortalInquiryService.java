@@ -2,6 +2,7 @@ package com.atlas.supplier.service.portal;
 
 import com.atlas.common.core.enums.ErrorCode;
 import com.atlas.common.core.exception.BizException;
+import com.atlas.purchase.enums.AwardStatusEnum;
 import com.atlas.supplier.config.SupplierSecurityConfig;
 import com.atlas.supplier.dto.portal.BidHistoryResponse;
 import com.atlas.supplier.dto.portal.BidRequest;

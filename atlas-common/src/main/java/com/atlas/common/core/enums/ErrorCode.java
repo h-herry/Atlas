@@ -145,10 +145,34 @@ public enum ErrorCode {
     PORTAL_CERTIFICATE_EXPIRED(14003, "资质已过期 / Certificate has expired"),
     PORTAL_PROFILE_NOT_EXIST(14004, "供应商档案不存在 / Supplier profile not found"),
 
+    // ==================== 订单模块 (15) / Order Module ====================
+    JIT_SCHEDULE_NOT_EXIST(15001, "JIT排程不存在 / JIT schedule not found"),
+    JIT_OUTSIDE_WINDOW(15002, "当前不在JIT确认窗口内 / Outside JIT confirmation window"),
+    JIT_ALREADY_CONFIRMED(15003, "JIT排程已确认，不可重复操作 / JIT schedule already confirmed"),
+    PLANT_NO_SUPPLIER(15004, "该工厂无可供应供应商 / No available supplier for this plant"),
+    ALLOCATION_CAPACITY_EXCEEDED(15005, "供应商产能已满，无法继续分单 / Supplier capacity exceeded"),
+
+    // ==================== 交货模块 (16) / Delivery Module ====================
+    VMI_INVENTORY_NOT_EXIST(16001, "VMI库存记录不存在 / VMI inventory not found"),
+    VMI_STOCK_BELOW_SAFETY(16002, "VMI库存低于安全库存 / VMI stock below safety"),
+    VMI_STOCK_ABOVE_MAX(16003, "VMI库存超过最大库存上限 / VMI stock above max"),
+
+    // ==================== 质量模块 (17) / Quality Module ====================
+    PPAP_SUBMISSION_NOT_EXIST(17001, "PPAP提交记录不存在 / PPAP submission not found"),
+    PPAP_ELEMENT_NOT_EXIST(17002, "PPAP要素不存在 / PPAP element not found"),
+    PPAP_LEVEL_INVALID(17003, "PPAP等级必须为1~5 / PPAP level must be 1~5"),
+    PPAP_ALREADY_APPROVED(17004, "PPAP已批准，不可修改 / PPAP already approved"),
+    LOT_NOT_EXIST(17005, "批次记录不存在 / Lot trace not found"),
+    LOT_DUPLICATE(17006, "批次号重复 / Duplicate lot number"),
+
+    // ==================== 物料模块 (18) / Material Module ====================
+    LOT_NOT_MANAGED(18001, "物料未启用批次管理 / Material lot management not enabled"),
+
     // ==================== 通用异常 (00扩展) / General Extended ====================
     ILLEGAL_STATE(400, "操作状态不合法"),
     PARAM_INVALID(400, "参数不合法"),
     DATA_NOT_FOUND(404, "数据不存在"),
+    DATA_NOT_EXIST(404, "数据不存在 / Data not exist"),
     OPERATION_FAILED(500, "操作失败"),
     AUCTION_CLOSED(4012, "竞价已关闭"),
     AUCTION_NOT_ACTIVE(4013, "竞价未开启");

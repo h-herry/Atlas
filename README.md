@@ -93,6 +93,7 @@ Supplier portal entry: `http://localhost:{port}/portal`
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| v1.2.23 | 2026-06-18 | 技术优化：防重放攻击/敏感脱敏/审计日志/异常标准化/Cache-Aside缓存/复合索引/异步化/健康检查/结构化日志/重试死信/API文档；制造业场景：JIT/VMI/PPAP/多工厂分单/来料追溯；数据库V99-V106共46张新表 / Tech optimization & manufacturing scenarios, DB V99-V106, 46 new tables |
 | v1.2.21 | 2026-06-18 | 供应商门户 + 电子合同 + 三通道消息中心 / Supplier portal, e-contract, 3-channel messaging |
 | v1.2.10 | - | 基础 SRM 功能框架 / SRM core framework |
 | v1.0.1 | - | 项目初始化 / Project initialization |
@@ -108,8 +109,8 @@ Supplier portal entry: `http://localhost:{port}/portal`
 | [04-期初数据](docs/04-期初数据.md) | 初始化数据说明 / Initial data |
 | [05-代码分析报告](docs/05-代码分析报告.md) | 代码质量分析 / Code analysis |
 | [06-SRM项目总报告](docs/06-SRM项目总报告.md) | SRM 项目总报告 / SRM report |
-| [07-SRM项目总报告-v1.2.21](docs/07-SRM项目总报告-v1.2.21.md) | v1.2.21 版本报告 / v1.2.21 release report |
-| [08-功能优化建议报告-v1.2.21](docs/08-功能优化建议报告-v1.2.21.md) | 优化建议 / Optimization suggestions |
+| [07-SRM项目总报告-v1.2.23](docs/07-SRM项目总报告-v1.2.23.md) | v1.2.23 版本报告 / v1.2.23 release report |
+| [08-功能优化建议报告-v1.2.23](docs/08-功能优化建议报告-v1.2.23.md) | 优化建议 / Optimization suggestions |
 
 ## 许可 / License
 

@@ -132,7 +132,7 @@ public class MessageService {
                 .id(msg.getId()).supplierId(msg.getSupplierId()).userId(msg.getUserId())
                 .title(msg.getTitle()).content(msg.getContent()).type(msg.getType())
                 .relatedId(msg.getRelatedId()).relatedType(msg.getRelatedType())
-                .channel(msg.getChannel()).isRead(msg.getIsRead())
+                .channel(msg.getChannel()).priority(msg.getPriority()).isRead(msg.getIsRead())
                 .readAt(msg.getReadAt()).createdAt(msg.getCreatedAt())
                 .build();
     }

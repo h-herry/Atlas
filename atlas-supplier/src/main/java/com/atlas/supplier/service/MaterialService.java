@@ -11,6 +11,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -131,6 +133,7 @@ public class MaterialService {
     /**
      * 启用/禁用物料 / Enable/disable material
      */
+    @CacheEvict(value = "material", key = "#id")
     @Transactional(rollbackFor = Exception.class)
     public void toggleStatus(Long id, Integer status) {
         Goods material = getById(id);

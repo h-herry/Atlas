@@ -45,6 +45,10 @@ public class PushRequest {
     @Builder.Default
     private String channel = "WEBSOCKET";
 
+    /** 消息优先级: 1紧急 2重要 3普通 / Priority: 1-Urgent 2-Important 3-Normal */
+    @Builder.Default
+    private Integer priority = 2;
+
     /** 模板编码（如使用模板推送）/ Template code (if using template push) */
     private String templateCode;
 

@@ -84,4 +84,27 @@ public class MessageController {
     public Result<Boolean> readMessage(@PathVariable Long messageId) {
         return Result.ok(messageService.readMessage(messageId));
     }
+
+    // ---- P1-3.9.2 已读/未读追踪 / Read/unread tracking ----
+
+    /**
+     * 批量标记已读 POST /api/message/read/batch /
+     * Batch mark messages as read
+     */
+    @Operation(summary = "批量标记已读 / Batch mark as read")
+    @PostMapping("/read/batch")
+    public Result<Integer> batchMarkAsRead(@RequestBody List<Long> messageIds) {
+        return Result.ok(messageService.batchMarkAsRead(messageIds));
+    }
+
+    /**
+     * 未读消息数 GET /api/message/unread/count /
+     * Unread count for a user
+     */
+    @Operation(summary = "未读数统计 / Unread count")
+    @GetMapping("/unread/count")
+    public Result<UnreadCountResponse> unreadCount(
+            @Parameter(description = "用户ID / User ID") @RequestParam Long userId) {
+        return Result.ok(messageService.getUnreadCountByUser(userId));
+    }
 }

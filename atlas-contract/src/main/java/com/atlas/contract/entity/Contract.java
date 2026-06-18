@@ -49,6 +49,36 @@ public class Contract {
     private String rejectReason;
     private Integer version;
 
+    // ---- P1-3.8.2 框架合同+执行合同扩展 / Framework + Execution contract extension ----
+
+    /** 合同类型: FRAMEWORK框架/EXECUTION执行/STANDALONE独立 /
+     * Contract type: FRAMEWORK/EXECUTION/STANDALONE */
+    private String contractType;
+
+    /** 父合同ID（执行合同关联框架合同）/ Parent contract ID (execution links to framework) */
+    private Long parentContractId;
+
+    /** 框架合同金额上限 / Framework max amount */
+    private BigDecimal frameworkMaxAmount;
+
+    /** 框架合同数量上限 / Framework max quantity */
+    private BigDecimal frameworkMaxQty;
+
+    /** 已执行金额 / Consumed amount */
+    private BigDecimal frameworkConsumedAmount;
+
+    /** 已执行数量 / Consumed quantity */
+    private BigDecimal frameworkConsumedQty;
+
+    /** 自动续约标记: 0否 1是 / Auto-renewal flag: 0-no 1-yes */
+    private Integer autoRenewal;
+
+    /** 续约提前通知天数 / Renewal notice days */
+    private Integer renewalNoticeDays;
+
+    /** 合同到期日期（冗余，加速查询）/ Expiry date (redundant for query speed) */
+    private LocalDate expiredAt;
+
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 

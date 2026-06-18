@@ -41,6 +41,9 @@ public class PurchaseOrder {
     /** 采购方式：1-公开招标 2-邀请招标 3-询比采购 4-竞价采购 5-竞争性谈判 6-竞争性磋商 7-单一来源 8-框架协议 9-合作创新 / Procurement type: 1-open bidding 2-invited bidding 3-inquiry 4-auction 5-negotiation 6-consultation 7-single source 8-framework 9-cooperative innovation */
     private Integer procurementType;
 
+    /** 订单类型：STANDARD-标准 / BLANKET-一揽子 / SCHEDULE_AGREEMENT-计划协议 / Order type: STANDARD / BLANKET / SCHEDULE_AGREEMENT */
+    private String orderType;
+
     /** 状态：0-草稿 1-待审批 2-已审批 3-执行中 4-已完成 5-已取消 / Status: 0-draft 1-pending approval 2-approved 3-executing 4-completed 5-cancelled */
     private Integer status;
 

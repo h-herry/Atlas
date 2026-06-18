@@ -47,6 +47,9 @@ public class Message {
     /** 推送渠道: WEBSOCKET / EMAIL / SMS / Push channel: WEBSOCKET / EMAIL / SMS */
     private String channel;
 
+    /** 消息优先级: 1紧急 2重要 3普通 / Priority: 1-Urgent 2-Important 3-Normal */
+    private Integer priority;
+
     /** 是否已读: 0 未读 / 1 已读 / Is read: 0 unread / 1 read */
     private Integer isRead;
 

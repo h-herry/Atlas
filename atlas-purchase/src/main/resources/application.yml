@@ -151,3 +151,13 @@ spring:
               algorithm-expression: audit_log_$->{java.time.YearMonth.from(created_at).getMonthValue() % 4}
     props:
       sql-show: false
+
+# ==================== 多维度比价评分权重 / Multi-Dimension Comparison Score Weights ====================
+# 四项权重之和应为 100 / The sum of four weights must equal 100
+inquiry:
+  score:
+    weights:
+      price: 50        # 价格得分权重 / Price score weight
+      delivery: 20     # 交期得分权重 / Delivery score weight
+      quality: 15      # 质量资质得分权重 / Quality & certification score weight
+      history: 15      # 历史绩效得分权重 / Historical performance score weight

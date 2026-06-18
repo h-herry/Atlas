@@ -65,12 +65,8 @@ public class ApiConfigController {
     @RequirePermission("open:config:test")
     public Result<Object> testConnection(@RequestParam String endpointCode,
                                          @RequestParam(required = false) java.util.Map<String, Object> params) {
-        try {
-            Object result = dynamicApiService.execute(endpointCode,
-                    params != null ? params : java.util.Collections.emptyMap());
-            return Result.ok(result);
-        } catch (Exception e) {
-            return Result.fail(500, "连通性测试失败: " + e.getMessage());
-        }
+        Object result = dynamicApiService.execute(endpointCode,
+                params != null ? params : java.util.Collections.emptyMap());
+        return Result.ok(result);
     }
 }

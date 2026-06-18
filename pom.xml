@@ -23,6 +23,10 @@
         <module>atlas-gateway</module>
         <module>atlas-open</module>
         <module>atlas-message</module>
+        <module>atlas-order</module>
+        <module>atlas-delivery</module>
+        <module>atlas-quality</module>
+        <module>atlas-material</module>
     </modules>
 
     <properties>

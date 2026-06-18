@@ -48,6 +48,7 @@ public class PurchaseService {
     private final AuctionService auctionService;
     private final SingleSourceService singleSourceService;
     private final CooperativeInnovationService cooperativeInnovationService;
+    private final OrderQuantityValidator orderQuantityValidator;
     private final RestTemplate restTemplate;
 
     /** 库存扣减最大重试次数（乐观锁自旋） / Max retry count for inventory deduction (optimistic-lock spin) */
@@ -74,6 +75,9 @@ public class PurchaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public PurchaseOrder createOrder(PurchaseCreateRequest request) {
+        // 0. MOQ/EOQ/订货倍数校验 / MOQ/EOQ/Order multiple validation
+        orderQuantityValidator.validate(request.getItems());
+
         // 1. 生成订单编号 / 1. Generate order number
         String orderNo = generateOrderNo();
 

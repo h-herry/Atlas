@@ -2,6 +2,7 @@ package com.atlas.common.service;
 
 import com.atlas.common.core.util.JwtUtil;
 import com.atlas.common.entity.AuditLog;
+import com.atlas.common.mapper.AuditLogMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -18,8 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
- * 审计日志服务 — 异步写入，不影响主业务流程 /
- * Audit log service — async write, does not block main business flow
+ * 审计日志服务 — 异步写入数据库（含日志冗余输出） / Audit log service — async DB write (with redundant log output)
  *
  * @author Atlas Team
  * @since 2.0.0
@@ -32,21 +32,26 @@ public class AuditLogService {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final JwtUtil jwtUtil;
+    private final AuditLogMapper auditLogMapper;
 
     /**
-     * 异步写入审计日志。
-     * <p>注意：当前版本审计日志仅通过日志输出，后续可接入数据库或 ELK。 /
-     * Async write audit log.
-     * <p>Note: current version only outputs via log; can be upgraded to DB or ELK.</p>
+     * 异步写入审计日志到数据库，并同步输出 JSON 日志到文件（冗余保留） /
+     * Async write audit log to database, and also output JSON log to file (redundant retention)
      */
     @Async
     public void record(AuditLog auditLog) {
         try {
             auditLog.setCreatedAt(LocalDateTime.now());
+            // 持久化到数据库 / Persist to database
+            auditLogMapper.insert(auditLog);
+            // 冗余日志输出（便于 ELK/CLS 集中采集） / Redundant log output (for centralized ELK/CLS collection)
             String json = OBJECT_MAPPER.writeValueAsString(auditLog);
             log.info("[AUDIT] {}", json);
         } catch (JsonProcessingException e) {
             log.error("[AUDIT] 审计日志序列化失败", e);
+        } catch (Exception e) {
+            // DB 写入失败不阻塞主业务流程 / DB write failure does not block main flow
+            log.error("[AUDIT] 审计日志写入数据库失败", e);
         }
     }
 

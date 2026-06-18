@@ -47,4 +47,20 @@ public interface MessageMapper extends BaseMapper<Message> {
             "<if test='type != null'>AND type = #{type}</if>" +
             "</script>")
     int markAsRead(@Param("supplierId") Long supplierId, @Param("type") String type);
+
+    /**
+     * 按消息ID列表批量标记已读 / Batch mark as read by message IDs (P1-3.9.2)
+     */
+    @Update("<script>" +
+            "UPDATE msg_record SET is_read = 1, read_at = NOW() " +
+            "WHERE id IN <foreach collection='ids' item='id' open='(' separator=',' close=')'>" +
+            "#{id}</foreach> AND is_read = 0" +
+            "</script>")
+    int batchMarkAsReadByIds(@Param("ids") List<Long> ids);
+
+    /**
+     * 按用户ID统计未读数 / Count unread by user ID (P1-3.9.2)
+     */
+    @Select("SELECT COUNT(*) FROM msg_record WHERE user_id = #{userId} AND is_read = 0")
+    Long countUnreadByUser(@Param("userId") Long userId);
 }

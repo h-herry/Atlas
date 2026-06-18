@@ -7,12 +7,15 @@ import com.atlas.common.web.Result;
 import com.atlas.contract.entity.Contract;
 import com.atlas.contract.service.ContractService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@Tag(name = "合同管理 / Contract Management", description = "合同 CRUD、签署流程、模板管理等 / Contract CRUD, signing flow, template management")
 @RestController
 @RequestMapping("/api/contract")
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class ContractController {
 
     // ============ 基础 CRUD / Basic CRUD ============
 
+    @Operation(summary = "分页查询合同 / Paginated query")
     @GetMapping("/page")
     @RequirePermission("contract:view")
     public Result<Page<Contract>> page(@RequestParam(required = false) String keyword,
@@ -45,6 +49,7 @@ public class ContractController {
         return Result.ok();
     }
 
+    @Operation(summary = "更新合同 / Update contract")
     @PutMapping
     @RequirePermission("contract:edit")
     public Result<Void> update(@Valid @RequestBody Contract contract) {

@@ -225,7 +225,7 @@ public class SignFlowService extends ServiceImpl<CntSignFlowMapper, CntSignFlow>
         LambdaQueryWrapper<CntSignRecord> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(CntSignRecord::getFlowId, flowId)
                .eq(CntSignRecord::getStepOrder, stepOrder)
-               .eq(CntSignRecord::getSignStatus, "PENDING");
+               .eq(CntSignRecord::getSignStatus, SignRecordStatus.PENDING.getCode());
         return recordMapper.selectOne(wrapper);
     }
 }

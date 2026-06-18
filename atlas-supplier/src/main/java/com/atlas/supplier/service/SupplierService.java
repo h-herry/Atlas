@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -75,6 +77,7 @@ public class SupplierService {
      * 新增供应商 — 注册前黑名单拦截，并清除相关缓存 /
      * Add supplier — blacklist intercept before registration, and evict related cache
      */
+    @CacheEvict(value = "supplier:info", key = "#supplier.id")
     public boolean save(Supplier supplier) {
         if (supplier.getId() != null && isBlacklisted(supplier.getId())) {
             throw new BizException(ErrorCode.SUPPLIER_BLACKLISTED);

@@ -11,6 +11,8 @@ import com.atlas.supplier.dto.portal.ProductionProgressRequest;
 import com.atlas.supplier.entity.DeliveryOrder;
 import com.atlas.supplier.service.portal.PortalOrderService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,7 @@ import java.util.Map;
  * @author Atlas Team
  * @since 2.1.0
  */
+@Tag(name = "订单管理 / Order Management", description = "供应商端订单确认、履行、生产进度、交期管理等 / Order confirmation, fulfillment, production progress, delivery management")
 @RestController
 @RequestMapping("/portal/orders")
 @RequiredArgsConstructor
@@ -93,6 +96,7 @@ public class PortalOrderController {
      * 订单统计（待确认数、履行中数、已完成数、逾期数） /
      * Order statistics (pending confirm, in progress, completed, overdue)
      */
+    @Operation(summary = "订单统计 / Order statistics")
     @GetMapping("/statistics")
     @RequirePermission("supplier:portal:order:view")
     public Result<Map<String, Object>> getOrderStatistics() {
@@ -163,6 +167,7 @@ public class PortalOrderController {
      * 获取订单履行时间线（订单从下达到完成的完整状态变化轨迹） /
      * Get order fulfillment timeline (complete status change trajectory from order placement to completion)
      */
+    @Operation(summary = "订单履行时间线 / Order timeline")
     @GetMapping("/{id}/timeline")
     @RequirePermission("supplier:portal:order:view")
     public Result<List<Map<String, Object>>> getOrderFulfillmentTimeline(@PathVariable Long id) {

@@ -65,5 +65,14 @@ public class PurchaseCreateRequest {
         /** 单价 / Unit price */
         @NotNull(message = "单价不能为空")
         private java.math.BigDecimal unitPrice;
+
+        /** 最小起订量（来自物料主数据） / Minimum order quantity (from material master data) */
+        private java.math.BigDecimal minOrderQty;
+
+        /** 经济订货量（来自物料主数据） / Economic order quantity (from material master data) */
+        private java.math.BigDecimal economicOrderQty;
+
+        /** 订货量倍数（来自物料主数据） / Order quantity multiple (from material master data) */
+        private java.math.BigDecimal orderQtyMultiple;
     }
 }

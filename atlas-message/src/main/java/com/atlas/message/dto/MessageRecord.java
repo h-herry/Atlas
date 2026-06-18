@@ -28,6 +28,7 @@ public class MessageRecord {
     private String relatedId;
     private String relatedType;
     private String channel;
+    private Integer priority;
     private Integer isRead;
     private LocalDateTime readAt;
     private LocalDateTime createdAt;

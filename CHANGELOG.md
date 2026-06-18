@@ -5,6 +5,54 @@
 
 ---
 
+## v1.2.23 (2026-06-18)
+
+### 技术优化 / Technical Optimization
+- API防重放攻击：NonceFilter基于Redis nonce+timestamp+签名校验 / API anti-replay: NonceFilter with Redis nonce+timestamp+signature verification
+- 敏感数据脱敏：@Sensitive注解，银行账号/手机号自动脱敏 / Sensitive data masking: @Sensitive annotation, auto-mask bank account/phone
+- 操作审计日志：@AuditLog注解+AOP切面，audit_log表记录全操作轨迹 / Audit logging: @AuditLog+AOP aspect, audit_log table tracks all operations
+- 异常处理标准化：BusinessException/SystemException分层，GlobalExceptionHandler统一处理 / Standardized exception handling: BusinessException/SystemException hierarchy, GlobalExceptionHandler
+- 魔法值枚举化：合同签署状态/定标状态枚举替换硬编码 / Enum replacement: contract signing status/award status enums replace hardcoded values
+- Redis缓存策略：物料24h/供应商12h/字典48h，Cache-Aside模式 / Redis caching: material 24h/supplier 12h/dict 48h, Cache-Aside pattern
+- 数据库复合索引：5张核心表补充7个复合索引 / DB composite indexes: 7 composite indexes across 5 core tables
+- 批量操作异步化：@Async线程池(core8/max16/queue200)，async_task表追踪 / Async batch operations: @Async thread pool (core8/max16/queue200), async_task table tracking
+- 健康检查端点：DataSourceHealthIndicator/RedisHealthIndicator / Health check endpoints: DataSourceHealthIndicator/RedisHealthIndicator
+- 结构化日志：TraceIdFilter全链路traceId，logback-spring.xml统一格式 / Structured logging: TraceIdFilter for full-chain traceId, unified logback-spring.xml format
+- 消息推送重试与死信：3次间隔重试(1/5/15min)，dead_msg_record死信表 / Message retry & dead letter: 3 retries with intervals (1/5/15min), dead_msg_record table
+- API文档：springdoc-openapi集成，5个核心Controller全部@Tag+@Operation / API docs: springdoc-openapi integration, 5 core Controllers with @Tag+@Operation
+
+### 制造业场景 / Manufacturing Scenarios
+- JIT交货排程：jit_delivery_schedule表，窗口超时自动标记MISSED / JIT delivery scheduling: jit_delivery_schedule table, auto-mark MISSED on window timeout
+- VMI库存监控：vmi_inventory表，定时补货预警+超库预警 / VMI inventory monitoring: vmi_inventory table, scheduled replenishment & overstock alerts
+- PPAP提交跟踪：ppap_submission+ppap_element，AIAG 18要素+等级1~5 / PPAP submission tracking: ppap_submission+ppap_element, AIAG 18 elements + levels 1~5
+- 多工厂分单：supplier_plant_rel+产能约束匹配，需求池拆分 / Multi-plant order splitting: supplier_plant_rel+capacity constraint matching, demand pool splitting
+- 来料批次追溯：lot_trace表，正反向追溯+不合格锁定范围评估 / Lot traceability: lot_trace table, forward/backward trace + nonconforming lock scope assessment
+
+### 功能优化 / Feature Optimization
+- 物料管理：树形分类(UNSPSC映射)/属性模板/ERP编码映射 / Material management: tree classification (UNSPSC mapping)/attribute templates/ERP code mapping
+- 供应商管理：QCD绩效评分卡/战略分级/风险监控/8D改善闭环 / Supplier management: QCD scorecard/strategic classification/risk monitoring/8D improvement loop
+- 询报价管理：询价模板/多维比价(价格50%+交期20%+质量15%+历史15%)/价格趋势 / RFQ management: inquiry templates/multi-dimension comparison (price 50%+delivery 20%+quality 15%+history 15%)/price trends
+- 订单管理：ECN变更流程(5状态)/MOQ/EOQ校验/一揽子订单/交期确认预警 / Order management: ECN change flow (5 states)/MOQ/EOQ validation/blanket orders/delivery confirmation alerts
+- 交付物流：ASN预先发货通知/收货质检联动/发货排程看板 / Delivery & logistics: ASN advance notice/receipt quality linkage/shipment scheduling board
+- 质量管理：检验标准(GB2828/AQL)/NCR不合格品处理/供应商PPM排名 / Quality management: inspection standards (GB2828/AQL)/NCR nonconforming handling/supplier PPM ranking
+- 结算管理：三单匹配自动对账/对账单差异处理/账龄分析(90天预警) / Settlement management: 3-way matching auto-reconciliation/statement discrepancy handling/aging analysis (90-day alert)
+- 合同管理：条款库(3分类)/合同到期30/15/7/1天提醒/框架+执行合同双层模式 / Contract management: clause library (3 categories)/contract expiry 30/15/7/1 day reminders/framework+execution dual-layer model
+- 消息中心：紧急/重要/普通三级优先级/已读追踪/渠道偏好(user级) / Message center: urgent/important/normal 3-level priority/read tracking/channel preference (user-level)
+- 系统公共：审批流模板(3场景预置)/多级组织(GROUP/DIVISION/PLANT/LINE)/数据导出模板 / System common: approval flow templates (3 pre-built scenarios)/multi-level org (GROUP/DIVISION/PLANT/LINE)/data export templates
+
+### 数据库迁移 / Database Migrations
+- V99~V106 共8个迁移脚本，46张新表 / V99~V106, 8 migration scripts, 46 new tables
+
+### 文档规范 / Documentation Standardization
+- 新增docs/00-文档规范.md强制执行标准 / Added docs/00-documentation-standards.md mandatory enforcement standards
+- 零、总则：所有文件生成时强制自检 / Section 0, General Principle: mandatory self-check on all file generation
+- 一、禁止项：AI声明/竞品实名/机器套话/YAML AIGC块 / Section 1, Prohibitions: AI declarations/competitor names/machine talk/YAML AIGC blocks
+- 二、格式要求：中英双语/人工编写风格 / Section 2, Format requirements: bilingual/human writing style
+- 三、代码规范：双语Javadoc/禁AI标记/禁冗余注释 / Section 3, Code standards: bilingual Javadoc/no AI markers/no redundant comments
+- 全项目700+文件合规扫描通过 / Full project 700+ files compliance scan passed
+
+---
+
 ## v1.2.21 (2026-06-18)
 
 ### 新增模块 / New Modules

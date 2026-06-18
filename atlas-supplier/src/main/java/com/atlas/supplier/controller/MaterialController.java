@@ -7,6 +7,8 @@ import com.atlas.common.entity.Goods;
 import com.atlas.common.entity.GoodsCategory;
 import com.atlas.supplier.service.MaterialService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Atlas Team
  * @since 2.0.0
  */
+@Tag(name = "物料管理 / Material Management", description = "物料主数据的 CRUD、分类、状态管理等 / Material master CRUD, category, status management")
 @RestController
 @RequestMapping("/api/material")
 @RequiredArgsConstructor
@@ -85,6 +88,7 @@ public class MaterialController {
     }
 
     /** 分页查询物料分类 / Paginated query of categories */
+    @Operation(summary = "分页查询物料分类 / Paginated category query")
     @GetMapping("/category/page")
     @RequirePermission("material:view")
     public Result<PageResult<GoodsCategory>> pageCategory(
