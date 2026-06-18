@@ -1,0 +1,27 @@
+# ==================== Atlas Open Nacos 配置模板 / Nacos Config Template ====================
+# 模块 / Module: atlas-open (可配置 API 对接平台 / Configurable API Integration Platform)
+# Nacos Data ID: atlas-open.yaml
+# Nacos Group: DEFAULT_GROUP
+
+# 数据源（ShardingSphere 接管时此段可注释） / DataSource (can be commented when ShardingSphere takes over)
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+
+# 第三方 API 全局超时配置 / Third-Party API Global Timeout Config
+atlas:
+  open:
+    default-timeout-ms: 10000        # 默认超时（毫秒） / Default timeout (ms)
+    default-retry-count: 3           # 默认重试次数 / Default retry count
+    oauth2:
+      token-cache-ttl-seconds: 1800  # OAuth2 Token 缓存 TTL（秒） / OAuth2 token cache TTL (seconds)
+    hmac:
+      timestamp-skew-seconds: 300    # HMAC 时间戳偏差容忍（秒） / HMAC timestamp skew tolerance (seconds)
+
+# 日志级别 / Log Level
+logging:
+  level:
+    com.atlas.open: DEBUG

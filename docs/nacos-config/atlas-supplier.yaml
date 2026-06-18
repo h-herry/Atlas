@@ -1,0 +1,26 @@
+# ==================== Atlas Supplier Nacos 配置模板 / Nacos Config Template ====================
+# 模块 / Module: atlas-supplier (供应商管理 / Supplier Management)
+# Nacos Data ID: atlas-supplier.yaml
+# Nacos Group: DEFAULT_GROUP
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+
+# 供应商准入配置 / Supplier Access Config
+atlas:
+  supplier:
+    access:
+      auto-approved-categories: "办公用品,日用百货"   # 自动准入品类 / Auto-approved categories
+      max-retry-count: 3                              # 最大重试次数 / Max retry count
+
+# 结算配置 / Settlement Config
+    settlement:
+      amount-tolerance: 0.01          # 金额容差 / Amount tolerance
+      max-three-way-match-days: 90    # 三单匹配最大天数 / Max three-way match days
+
+logging:
+  level:
+    com.atlas.supplier: DEBUG

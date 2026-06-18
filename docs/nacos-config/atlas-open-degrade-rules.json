@@ -1,0 +1,19 @@
+// atlas-open-degrade-rules — Sentinel 熔断降级规则 / Sentinel Circuit Breaking & Degradation Rules
+[
+  {
+    "resource": "GET:/api/open/integration/*",
+    "grade": 1,                  // 异常比例 / Exception ratio
+    "count": 0.5,                // 异常比例阈值 50% / Exception ratio threshold 50%
+    "timeWindow": 30,            // 熔断时长 30 秒 / Circuit break duration 30s
+    "minRequestAmount": 5        // 最小请求数 / Min request count
+  },
+  {
+    "resource": "POST:/api/open/config/test",
+    "grade": 0,                  // 慢调用比例 / Slow call ratio
+    "count": 100,                // 慢调用阈值 100ms / Slow call threshold 100ms
+    "timeWindow": 10,            // 熔断时长 10 秒 / Circuit break duration 10s
+    "minRequestAmount": 3,       // 最小请求数 / Min request count
+    "statIntervalMs": 1000,      // 统计时长 1 秒 / Statistics interval 1s
+    "slowRatioThreshold": 0.5    // 慢调用比例阈值 50% / Slow call ratio threshold 50%
+  }
+]

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.atlas</groupId>
+        <artifactId>atlas</artifactId>
+        <version>1.2.10</version>
+    </parent>
+
+    <artifactId>atlas-message</artifactId>
+    <name>Atlas Message / 消息推送微服务</name>
+    <description>消息推送微服务 — WebSocket 实时推送 / 消息记录持久化 / 跨实例 Redis Pub/Sub 广播 / Message push microservice — WebSocket real-time push / message persistence / cross-instance Redis Pub/Sub broadcast</description>
+
+    <dependencies>
+        <!-- Atlas Common / 公共模块（含 WebSocket 基础设施 / 安全 / JWT / MyBatis-Plus） -->
+        <dependency>
+            <groupId>com.atlas</groupId>
+            <artifactId>atlas-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- WebSocket / STOMP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <!-- OpenFeign / 供其他微服务调用 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <!-- JavaMailSender / 邮件发送 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <!-- Thymeleaf / 邮件模板渲染 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- 阿里云短信 SDK / Alibaba Cloud SMS SDK -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>dysmsapi20170525</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <!-- 腾讯云短信 SDK / Tencent Cloud SMS SDK（预留）/ (reserved) -->
+        <dependency>
+            <groupId>com.tencentcloudapi</groupId>
+            <artifactId>tencentcloud-sdk-java-sms</artifactId>
+            <version>3.1.1105</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

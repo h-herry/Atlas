@@ -1,0 +1,24 @@
+# ==================== Atlas Receipt Nacos 配置模板 / Nacos Config Template ====================
+# 模块 / Module: atlas-receipt (收货管理 / Receipt Management)
+# Nacos Data ID: atlas-receipt.yaml
+# Nacos Group: DEFAULT_GROUP
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+
+# 收货业务配置 / Receipt Business Config
+atlas:
+  receipt:
+    quality:
+      auto-pass-percent: 95       # 自动合格百分比阈值 / Auto-pass percentage threshold
+    mq:
+      topic: atlas-receipt-confirm  # 确认收货消息 Topic / Receipt confirmation topic
+      retry-max: 3                  # 消息重试最大次数 / Max message retry count
+      retry-interval-seconds: 60    # 重试间隔（秒） / Retry interval (seconds)
+
+logging:
+  level:
+    com.atlas.receipt: DEBUG

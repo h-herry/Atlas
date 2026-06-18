@@ -1,0 +1,105 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: atlas-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:atlas}
+        group: DEFAULT_GROUP
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:localhost:8080}
+        port: 8719
+      datasource:
+        ds1:
+          nacos:
+            server-addr: ${NACOS_SERVER:localhost:8848}
+            namespace: ${NACOS_NAMESPACE:atlas}
+            data-id: ${spring.application.name}-flow-rules
+            group-id: SENTINEL_GROUP
+            data-type: json
+            rule-type: flow
+        ds2:
+          nacos:
+            server-addr: ${NACOS_SERVER:localhost:8848}
+            namespace: ${NACOS_NAMESPACE:atlas}
+            data-id: ${spring.application.name}-degrade-rules
+            group-id: SENTINEL_GROUP
+            data-type: json
+            rule-type: degrade
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: atlas-user
+          uri: lb://atlas-user
+          predicates:
+            - Path=/api/user/**
+        - id: atlas-supplier
+          uri: lb://atlas-supplier
+          predicates:
+            - Path=/api/supplier/**
+        - id: atlas-contract
+          uri: lb://atlas-contract
+          predicates:
+            - Path=/api/contract/**
+        - id: atlas-purchase
+          uri: lb://atlas-purchase
+          predicates:
+            - Path=/api/purchase/**
+        - id: atlas-inventory
+          uri: lb://atlas-inventory
+          predicates:
+            - Path=/api/inventory/**
+        - id: atlas-receipt
+          uri: lb://atlas-receipt
+          predicates:
+            - Path=/api/receipt/**
+        - id: atlas-workflow
+          uri: lb://atlas-workflow
+          predicates:
+            - Path=/api/workflow/**
+        - id: atlas-supplier-portal
+          uri: lb://atlas-supplier-portal
+          predicates:
+            - Path=/portal/**
+        - id: atlas-message-api
+          uri: lb://atlas-message
+          predicates:
+            - Path=/api/message/**
+        # WebSocket 路由 — STOMP over SockJS / WebSocket route — STOMP over SockJS
+        - id: atlas-message-ws
+          uri: lb:ws://atlas-message
+          predicates:
+            - Path=/ws/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+      default-filters:
+        - AddRequestHeader=X-Gateway-Timestamp, #{T(java.time.LocalDateTime).now().toString()}
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://localhost:9411/api/v2/spans}
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">入驻审核未通过通知 / Registration Rejected</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f5f7fa;font-family:'Helvetica Neue',Arial,'Microsoft YaHei',sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5f7fa;padding:40px 0;">
+    <tr>
+        <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+                <tr>
+                    <td style="background:linear-gradient(135deg,#ff7875,#cf1322);padding:32px 40px;text-align:center;">
+                        <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:600;">SRM 供应商关系管理系统</h1>
+                        <p style="margin:8px 0 0;color:rgba(255,255,255,0.85);font-size:14px;">Supplier Relationship Management System</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:32px 40px 20px;">
+                        <h2 style="margin:0;color:#1a1a2e;font-size:20px;font-weight:600;">入驻审核未通过 / Registration Rejected</h2>
+                        <p style="margin:8px 0 0;color:#8c8c8c;font-size:13px;">Your registration was not approved — see details below</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:0 40px 32px;">
+                        <table width="100%" cellpadding="0" cellspacing="0" style="background:#fff2f0;border-radius:6px;border:1px solid #ffccc7;">
+                            <tr>
+                                <td style="padding:20px;">
+                                    <p style="margin:0 0 12px;color:#333333;font-size:15px;line-height:1.8;">
+                                        尊敬的供应商，您好！<br>Dear Supplier,
+                                    </p>
+                                    <p style="margin:0 0 12px;color:#333333;font-size:15px;line-height:1.8;">
+                                        很遗憾，您的入驻申请未通过审核。请根据以下原因修改资料后重新提交。<br>
+                                        Unfortunately, your registration was not approved. Please revise your materials based on the reason below and resubmit.
+                                    </p>
+                                    <table width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:4px;border:1px solid #e8e8e8;margin-top:16px;">
+                                        <tr><td style="padding:12px 16px;color:#666666;font-size:13px;width:120px;">申请编号 / Application ID</td><td style="padding:12px 16px;color:#333333;font-size:14px;font-weight:500;" th:text="${relatedId}">-</td></tr>
+                                        <tr><td style="padding:12px 16px;color:#666666;font-size:13px;">驳回原因 / Rejection Reason</td><td style="padding:12px 16px;color:#cf1322;font-size:14px;" th:text="${rejectReason}">-</td></tr>
+                                        <tr><td style="padding:12px 16px;color:#666666;font-size:13px;">审核时间 / Reviewed At</td><td style="padding:12px 16px;color:#333333;font-size:14px;" th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">-</td></tr>
+                                    </table>
+                                    <p style="margin:16px 0 0;color:#666666;font-size:14px;line-height:1.8;">
+                                        如有疑问，请联系采购方管理员。<br>
+                                        If you have any questions, please contact the purchasing administrator.
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background:#fafafa;padding:24px 40px;text-align:center;border-top:1px solid #f0f0f0;">
+                        <p style="margin:0;color:#8c8c8c;font-size:12px;line-height:1.8;">
+                            本邮件由 SRM 系统自动发送，请勿回复。<br>
+                            This is an automated email from SRM System. Please do not reply.
+                        </p>
+                        <p style="margin:4px 0 0;color:#bfbfbf;font-size:11px;">
+                            &copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span> Atlas SRM System. All rights reserved.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

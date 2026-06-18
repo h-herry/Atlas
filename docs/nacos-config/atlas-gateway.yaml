@@ -1,0 +1,26 @@
+# ==================== Atlas Gateway Nacos 配置模板 / Nacos Config Template ====================
+# 模块 / Module: atlas-gateway (API 网关 / API Gateway)
+# Nacos Data ID: atlas-gateway.yaml
+# Nacos Group: DEFAULT_GROUP
+
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+      default-filters:
+        - AddRequestHeader=X-Gateway-Timestamp, #{T(java.time.LocalDateTime).now().toString()}
+
+# 网关限流（Sentinel） / Gateway Rate Limiting (Sentinel)
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:localhost:8080}
+
+logging:
+  level:
+    com.atlas.gateway: DEBUG

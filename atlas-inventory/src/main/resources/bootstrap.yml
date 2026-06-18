@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: atlas-inventory
+  cloud:
+    nacos:
+      config:
+        server-addr: ${NACOS_SERVER:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:atlas}
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        refresh-enabled: true
+        shared-configs:
+          - data-id: atlas-common.yaml
+            group: DEFAULT_GROUP
+            refresh: true

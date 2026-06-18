@@ -1,0 +1,93 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: atlas-supplier
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:atlas}
+        group: DEFAULT_GROUP
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:localhost:8080}
+        port: 8719
+      datasource:
+        ds1:
+          nacos:
+            server-addr: ${NACOS_SERVER:localhost:8848}
+            namespace: ${NACOS_NAMESPACE:atlas}
+            data-id: ${spring.application.name}-flow-rules
+            group-id: SENTINEL_GROUP
+            data-type: json
+            rule-type: flow
+        ds2:
+          nacos:
+            server-addr: ${NACOS_SERVER:localhost:8848}
+            namespace: ${NACOS_NAMESPACE:atlas}
+            data-id: ${spring.application.name}-degrade-rules
+            group-id: SENTINEL_GROUP
+            data-type: json
+            rule-type: degrade
+  datasource:
+    url: jdbc:mysql://localhost:3306/atlas_supplier?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Shanghai
+    username: root
+    password: ${DB_PASSWORD:atlas123}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ${REDIS_PASSWORD:atlas123}
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: assign_id
+
+knife4j:
+  enable: true
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://localhost:9411/api/v2/spans}
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+
+feign:
+  sentinel:
+    enabled: true
+seata:
+  tx-service-group: atlas-tx-group
+  service:
+    vgroup-mapping:
+      atlas-tx-group: default
+    grouplist:
+      default: ${SEATA_SERVER:localhost:8091}
+  registry:
+    type: nacos
+    nacos:
+      server-addr: ${NACOS_SERVER:localhost:8848}
+      namespace: ${NACOS_NAMESPACE:atlas}
+      group: SEATA_GROUP
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${NACOS_SERVER:localhost:8848}
+      namespace: ${NACOS_NAMESPACE:atlas}
+      group: SEATA_GROUP

@@ -1,0 +1,26 @@
+# ==================== Atlas Purchase Nacos 配置模板 / Nacos Config Template ====================
+# 模块 / Module: atlas-purchase (采购订单管理 / Purchase Order Management)
+# Nacos Data ID: atlas-purchase.yaml
+# Nacos Group: DEFAULT_GROUP
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 10
+
+# 采购业务配置 / Purchase Business Config
+atlas:
+  purchase:
+    order:
+      no-prefix: "PO"               # 订单号前缀 / Order number prefix
+      max-retry-deduct: 3           # 库存扣减最大重试次数 / Max stock deduction retries
+      retry-base-delay-ms: 100      # 重试基础延迟（毫秒） / Retry base delay (ms)
+    procurement:
+      bidding:
+        min-bidder-count: 3         # 最小投标方数量 / Minimum bidder count
+        bid-duration-days: 7        # 投标持续天数 / Bid duration (days)
+
+logging:
+  level:
+    com.atlas.purchase: DEBUG

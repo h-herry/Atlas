@@ -1,0 +1,15 @@
+# ==================== Atlas 项目公共配置 / Atlas Common Config ====================
+# 发布到 Nacos 配置中心 data-id: atlas-common.yaml / Published to Nacos Config Center
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/atlas}
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASS:root}
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}

@@ -1,0 +1,120 @@
+spring:
+  application:
+    name: atlas-open
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/atlas_open?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASS:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:localhost:8080}
+        port: 8719
+      datasource:
+        ds1:
+          nacos:
+            server-addr: ${NACOS_SERVER:localhost:8848}
+            namespace: ${NACOS_NAMESPACE:atlas}
+            data-id: atlas-open-flow-rules
+            group-id: SENTINEL_GROUP
+            data-type: json
+            rule-type: flow
+        ds2:
+          nacos:
+            server-addr: ${NACOS_SERVER:localhost:8848}
+            namespace: ${NACOS_NAMESPACE:atlas}
+            data-id: atlas-open-degrade-rules
+            group-id: SENTINEL_GROUP
+            data-type: json
+            rule-type: degrade
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:atlas}
+        group: DEFAULT_GROUP
+      config:
+        server-addr: ${NACOS_SERVER:localhost:8848}
+        namespace: ${NACOS_NAMESPACE:atlas}
+        group: DEFAULT_GROUP
+  shardingsphere:
+    mode:
+      type: Standalone
+      repository:
+        type: JDBC
+    datasource:
+      names: ds0, ds1
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/atlas_open_0
+        username: ${MYSQL_USER:root}
+        password: ${MYSQL_PASS:root}
+      ds1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/atlas_open_1
+        username: ${MYSQL_USER:root}
+        password: ${MYSQL_PASS:root}
+    rules:
+      sharding:
+        tables:
+          api_integration_log:
+            actual-data-nodes: ds$->{0..1}.api_integration_log_$->{0..3}
+            database-strategy:
+              standard:
+                sharding-column: config_id
+                sharding-algorithm-name: api-log-db-inline
+            table-strategy:
+              standard:
+                sharding-column: config_id
+                sharding-algorithm-name: api-log-tb-inline
+        sharding-algorithms:
+          api-log-db-inline:
+            type: INLINE
+            props:
+              algorithm-expression: ds$->{config_id % 2}
+          api-log-tb-inline:
+            type: INLINE
+            props:
+              algorithm-expression: api_integration_log_$->{config_id % 4}
+    props:
+      sql-show: false
+
+seata:
+  tx-service-group: atlas-tx-group
+  service:
+    vgroup-mapping:
+      atlas-tx-group: default
+    grouplist:
+      default: ${SEATA_SERVER:localhost:8091}
+  registry:
+    type: nacos
+    nacos:
+      server-addr: ${NACOS_SERVER:localhost:8848}
+      namespace: ${NACOS_NAMESPACE:atlas}
+      group: SEATA_GROUP
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${NACOS_SERVER:localhost:8848}
+      namespace: ${NACOS_NAMESPACE:atlas}
+      group: SEATA_GROUP
+
+feign:
+  sentinel:
+    enabled: true
+
+server:
+  port: 8090
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"

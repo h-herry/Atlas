@@ -1,0 +1,22 @@
+# ==================== Atlas Inventory Nacos 配置模板 / Nacos Config Template ====================
+# 模块 / Module: atlas-inventory (库存管理 / Inventory Management)
+# Nacos Data ID: atlas-inventory.yaml
+# Nacos Group: DEFAULT_GROUP
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+
+# 库存业务配置 / Inventory Business Config
+atlas:
+  inventory:
+    stock:
+      low-threshold: 10         # 低库存阈值 / Low stock threshold
+      critical-threshold: 3     # 严重低库存阈值 / Critical stock threshold
+      lock-timeout-seconds: 30  # 乐观锁超时（秒） / Optimistic lock timeout (seconds)
+
+logging:
+  level:
+    com.atlas.inventory: DEBUG

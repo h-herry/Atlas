@@ -1,0 +1,23 @@
+# ==================== Atlas User Nacos 配置模板 / Nacos Config Template ====================
+# 模块 / Module: atlas-user (用户管理 / User Management)
+# Nacos Data ID: atlas-user.yaml
+# Nacos Group: DEFAULT_GROUP
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 3
+
+# 用户业务配置 / User Business Config
+atlas:
+  user:
+    password:
+      min-length: 8             # 密码最小长度 / Min password length
+      require-special-char: true  # 是否要求特殊字符 / Require special characters
+    session:
+      timeout-minutes: 30       # 会话超时（分钟） / Session timeout (minutes)
+
+logging:
+  level:
+    com.atlas.user: DEBUG
