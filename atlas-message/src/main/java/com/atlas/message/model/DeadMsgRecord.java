@@ -23,8 +23,8 @@ public class DeadMsgRecord {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 原始消息 ID / Original message ID */
-    private Long originalMsgId;
+    /** 原始消息关联业务ID（如订单号 PO-2026-0001）/ Original message related business ID */
+    private String originalMsgId;
 
     /** 供应商 ID / Supplier ID */
     private Long supplierId;

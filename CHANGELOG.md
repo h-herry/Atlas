@@ -5,6 +5,27 @@
 
 ---
 
+## v1.2.24 (2026-06-18)
+
+### 全量合规检查 / Full Compliance Audit
+- 文档规范合规扫描 (00-文档规范.md)：0 违规 / Documentation compliance scan: 0 violations
+- SQL 迁移版本连续性：V99→V100→V101→V102→V103→V104→V105→V106 全部存在 / SQL migration sequence: all versions present
+- 模块注册一致性：15/15 模块完全对应 / Module registration: 15/15 fully matched
+- Entity-Mapper 对应完整性：124 实体全部有对应 Mapper / Entity-Mapper integrity: all 124 entities have corresponding Mappers
+- Controller-Service-Mapper 依赖链：全部完整 / Controller dependency chain: all complete
+- 包名-路径一致性：全部一致 / Package-path consistency: all consistent
+- 文档交叉引用：全部有效 / Cross-document references: all valid
+
+### 编译错误修复 / Compilation Error Fixes
+- atlas-quality 依赖补全：添加 atlas-material 依赖声明 / Added atlas-material dependency to atlas-quality pom.xml
+- atlas-common ErrorCode 补全：新增 DATA_EXIST(409)/BIZ_EXCEPTION(500)/UPDATE_FAILED(500)/INSERT_FAILED(500) / Added missing ErrorCode constants
+- atlas-common Result 重载补全：新增 fail(String) 方法 / Added Result.fail(String) overload
+- DeadMsgRecord 类型统一：originalMsgId Long→String 与 Message.relatedId 一致 / Unified DeadMsgRecord.originalMsgId type to String
+- MessageService 方法补全：新增 batchMarkAsRead()/getUnreadCountByUser() / Added missing MessageService methods
+- GoodsMapper/GoodsCategoryMapper 新增：atlas-common 模块补全 / Added GoodsMapper and GoodsCategoryMapper to atlas-common
+
+---
+
 ## v1.2.23 (2026-06-18)
 
 ### 技术优化 / Technical Optimization

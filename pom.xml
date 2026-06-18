@@ -41,6 +41,7 @@
 
         <mybatis-plus.version>3.5.6</mybatis-plus.version>
         <flowable.version>7.0.1</flowable.version>
+        <fastjson2.version>2.0.53</fastjson2.version>
         <redisson.version>3.27.2</redisson.version>
         <rocketmq.version>5.1.4</rocketmq.version>
         <lombok.version>1.18.38</lombok.version>
@@ -107,6 +108,13 @@
                 <groupId>org.flowable</groupId>
                 <artifactId>flowable-spring-boot-starter</artifactId>
                 <version>${flowable.version}</version>
+            </dependency>
+
+            <!-- FastJSON2 -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
             </dependency>
 
             <!-- Seata -->

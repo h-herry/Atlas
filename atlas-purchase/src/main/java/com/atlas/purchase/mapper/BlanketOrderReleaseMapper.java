@@ -1,4 +1,4 @@
-package atlas-purchase.com.atlas.purchase.mapper.BlanketOrderReleaseMapper;
+package com.atlas.purchase.mapper;
 
 import com.atlas.purchase.entity.BlanketOrderRelease;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

@@ -51,6 +51,27 @@ public class JwtUtil {
     }
 
     /**
+     * 基于 claims 和过期秒数创建 JWT（供应商门户专用 / Supplier portal only） /
+     * Create JWT based on claims map and expiration seconds (for supplier portal)
+     *
+     * @param claims         claims map (subject, username, deptId etc.)
+     * @param expireSeconds  expiration in seconds
+     * @return JWT token string
+     */
+    public String createToken(Map<String, Object> claims, long expireSeconds) {
+        Date now = new Date();
+        Date expire = new Date(now.getTime() + expireSeconds * 1000);
+
+        JwtBuilder builder = Jwts.builder()
+                .issuedAt(now)
+                .expiration(expire)
+                .signWith(getKey());
+
+        claims.forEach(builder::claim);
+        return builder.compact();
+    }
+
+    /**
      * 解析 Token，验证失败返回 null /
      * Parse token, returns null on validation failure
      */

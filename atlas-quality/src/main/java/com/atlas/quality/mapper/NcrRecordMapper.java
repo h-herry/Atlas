@@ -1,4 +1,4 @@
-package atlas-quality.com.atlas.quality.mapper.NcrRecordMapper;
+package com.atlas.quality.mapper;
 
 import com.atlas.quality.entity.NcrRecord;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

@@ -121,7 +121,7 @@ public class ThreeWayMatchService {
         }
         match.setMatchStatus("MATCHED");
         match.setResolution(resolution);
-        match.setResolvedBy(resolvedBy);
+        match.setResolutionBy(resolvedBy);
         match.setResolutionNote(note);
         match.setResolutionAt(LocalDateTime.now());
         match.setUpdatedAt(LocalDateTime.now());

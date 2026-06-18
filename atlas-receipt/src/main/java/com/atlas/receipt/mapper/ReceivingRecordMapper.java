@@ -1,4 +1,4 @@
-package atlas-receipt.com.atlas.receipt.mapper.ReceivingRecordMapper;
+package com.atlas.receipt.mapper;
 
 import com.atlas.receipt.entity.ReceivingRecord;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

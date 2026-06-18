@@ -125,6 +125,40 @@ public class MessageService {
         return messageMapper.updateById(msg) > 0;
     }
 
+    /**
+     * 批量标记消息为已读 / Batch mark messages as read
+     *
+     * @param messageIds 消息ID列表 / Message ID list
+     * @return 已标记数量 / Count of marked messages
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public int batchMarkAsRead(List<Long> messageIds) {
+        if (messageIds == null || messageIds.isEmpty()) {
+            return 0;
+        }
+        int count = 0;
+        for (Long id : messageIds) {
+            if (readMessage(id)) {
+                count++;
+            }
+        }
+        log.info("批量标记已读完成: total={}, success={}", messageIds.size(), count);
+        return count;
+    }
+
+    /**
+     * 按用户ID获取未读计数 / Get unread count by user ID
+     *
+     * @param userId 用户ID / User ID
+     * @return 未读计数响应 / Unread count response
+     */
+    public UnreadCountResponse getUnreadCountByUser(Long userId) {
+        Long total = messageMapper.countUnreadByUser(userId);
+        return UnreadCountResponse.builder()
+                .totalUnread(total)
+                .build();
+    }
+
     // ---- private helpers ----
 
     private MessageRecord toRecord(Message msg) {

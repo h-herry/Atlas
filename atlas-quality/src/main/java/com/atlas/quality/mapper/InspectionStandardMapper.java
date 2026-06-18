@@ -1,4 +1,4 @@
-package atlas-quality.com.atlas.quality.mapper.InspectionStandardMapper;
+package com.atlas.quality.mapper;
 
 import com.atlas.quality.entity.InspectionStandard;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

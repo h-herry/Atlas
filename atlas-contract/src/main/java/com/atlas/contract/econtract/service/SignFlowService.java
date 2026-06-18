@@ -2,6 +2,7 @@ package com.atlas.contract.econtract.service;
 
 import com.atlas.contract.econtract.dto.SignFlowCreateRequest;
 import com.atlas.contract.econtract.dto.SignFlowStatusResponse;
+import com.atlas.contract.econtract.enums.SignRecordStatus;
 import com.atlas.contract.econtract.enums.SignStatus;
 import com.atlas.contract.econtract.mapper.CntSignFlowMapper;
 import com.atlas.contract.econtract.mapper.CntSignRecordMapper;

@@ -16,9 +16,11 @@ public enum ErrorCode {
     BAD_REQUEST(400, "请求参数错误"),
     UNAUTHORIZED(401, "未登录或Token已过期"),
     TOKEN_EXPIRED(402, "Token已过期，请重新登录"),
+    TOKEN_INVALID(405, "Token无效"),
     FORBIDDEN(403, "权限不足"),
     NOT_FOUND(404, "资源不存在"),
     INTERNAL_ERROR(500, "系统繁忙，请稍后重试"),
+    SYSTEM_ERROR(500, "系统内部错误"),
 
     // ==================== 用户模块 (01) / User Module ====================
     USER_NOT_EXIST(1001, "用户不存在"),
@@ -27,6 +29,8 @@ public enum ErrorCode {
     PASSWORD_ERROR(1004, "密码错误"),
     ROLE_NOT_EXIST(1005, "角色不存在"),
     USER_LOCKED(1007, "账户已被锁定，请15分钟后再试"),
+    USER_NOT_FOUND(1008, "用户不存在 / User not found"),
+    ACCOUNT_DISABLED(1009, "账号已被禁用 / Account disabled"),
     RATE_LIMIT_EXCEEDED(429, "请求过于频繁，请稍后再试"),
     CIRCUIT_BREAKER_OPEN(12020, "服务熔断，请稍后重试"),
     AUDIT_LOG_WRITE_FAILED(12021, "审计日志写入失败"),
@@ -45,6 +49,7 @@ public enum ErrorCode {
     ORDER_NOT_EXIST(4001, "采购订单不存在"),
     ORDER_CANNOT_MODIFY(4002, "当前状态不允许修改订单"),
     ORDER_DUPLICATE(4003, "重复提交（幂等校验未通过）"),
+    CHANGE_NOT_EXIST(4004, "变更单不存在"),
 
     // ==================== 库存模块 (05) / Inventory Module ====================
     STOCK_INSUFFICIENT(5001, "库存不足"),
@@ -173,6 +178,10 @@ public enum ErrorCode {
     PARAM_INVALID(400, "参数不合法"),
     DATA_NOT_FOUND(404, "数据不存在"),
     DATA_NOT_EXIST(404, "数据不存在 / Data not exist"),
+    DATA_EXIST(409, "数据已存在 / Data already exists"),
+    BIZ_EXCEPTION(500, "业务异常 / Business exception"),
+    UPDATE_FAILED(500, "更新失败 / Update failed"),
+    INSERT_FAILED(500, "新增失败 / Insert failed"),
     OPERATION_FAILED(500, "操作失败"),
     AUCTION_CLOSED(4012, "竞价已关闭"),
     AUCTION_NOT_ACTIVE(4013, "竞价未开启");

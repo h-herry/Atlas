@@ -1,6 +1,6 @@
 package com.atlas.receipt.controller;
 
-import com.atlas.common.core.result.Result;
+import com.atlas.common.core.web.Result;
 import com.atlas.receipt.entity.AsnItem;
 import com.atlas.receipt.entity.AsnRecord;
 import com.atlas.receipt.service.AsnService;

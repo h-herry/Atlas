@@ -51,9 +51,9 @@ public class Contract {
 
     // ---- P1-3.8.2 框架合同+执行合同扩展 / Framework + Execution contract extension ----
 
-    /** 合同类型: FRAMEWORK框架/EXECUTION执行/STANDALONE独立 /
-     * Contract type: FRAMEWORK/EXECUTION/STANDALONE */
-    private String contractType;
+    /** 合同结构分类: FRAMEWORK框架/EXECUTION执行/STANDALONE独立 /
+     * Contract category: FRAMEWORK/EXECUTION/STANDALONE */
+    private String contractCategory;
 
     /** 父合同ID（执行合同关联框架合同）/ Parent contract ID (execution links to framework) */
     private Long parentContractId;

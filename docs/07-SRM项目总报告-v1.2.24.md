@@ -1,6 +1,6 @@
-# Atlas SRM 企业采购管理系统 — 项目总报告 v1.2.23 / Atlas SRM Enterprise Procurement Management System — Project Report v1.2.23
+# Atlas SRM 企业采购管理系统 — 项目总报告 v1.2.24 / Atlas SRM Enterprise Procurement Management System — Project Report v1.2.24
 
-> 报告版本：v1.2.23 / Report Version: v1.2.23
+> 报告版本：v1.2.24 / Report Version: v1.2.24
 > 审计日期：2026-06-17 / Audit Date: 2026-06-17
 > 审计方式：全量文件遍历 + 交叉比对 + 配置解析 / Audit Method: Full file traversal + cross-validation + config parsing
 > 审计范围：10 模块 / 291 Java 文件 / 22 SQL 迁移脚本 / 43 张数据库表 / 9 份已有文档 / Audit Scope: 10 modules / 291 Java files / 22 SQL migration scripts / 43 database tables / 9 existing docs
@@ -17,7 +17,7 @@
 | 项目名称 / Project Name | Atlas 企业采购管理系统 / Atlas Enterprise Procurement Management System |
 | GroupId / ArtifactId | `com.atlas` / `atlas` |
 | 当前版本 / Current Version | 1.2.21 |
-| 报告版本 / Report Version | v1.2.23 |
+| 报告版本 / Report Version | v1.2.24 |
 | Java 版本 / Java Version | JDK 17 |
 | 构建工具 / Build Tool | Maven 3.8+ |
 | Java 文件总数 / Total Java Files | 291 |
@@ -751,7 +751,7 @@ third_party_api_config ──< api_integration_log
 | 04-期初数据 / Seed Data | `docs/04-期初数据.md` | 过时（版本链不完整） / Outdated |
 | 05-代码分析报告 / Code Analysis | `docs/05-代码分析报告.md` | 较新（大部分优化已实施） / Relatively current |
 | 06-SRM项目总报告 / SRM Report | `docs/06-SRM项目总报告.md` | v1.2.10 版本 |
-| 07-SRM项目总报告-v1.2.23 / SRM Report v1.2.23 | `docs/07-SRM项目总报告-v1.2.23.md` | **本报告 / This report** |
+| 07-SRM项目总报告-v1.2.24 / SRM Report v1.2.24 | `docs/07-SRM项目总报告-v1.2.24.md` | **本报告 / This report** |
 
 ### 7.2 模块文档 / Module Documents
 
@@ -800,14 +800,14 @@ third_party_api_config ──< api_integration_log
 | 代码质量 / Code Quality | 8.5/10 | 状态机/错误码/限流设计优秀，5 个状态枚举推广完成，HMAC-SHA256 签名验证，Guava RateLimiter 本地限流 / FSM/error codes/rate limiting well-designed |
 | 安全性 / Security | 8.0/10 | JWT+RABC 框架完善、API AppKey/Secret + HMAC-SHA256 鉴权已实现、防重放机制已实现 / JWT+RBAC complete, API auth implemented, anti-replay ready |
 | 测试覆盖 / Test Coverage | 2.0/10 | 仅 6 个测试类 / 33 用例，atlas-common / atlas-workflow / atlas-open 零测试 / Only 6 test classes/33 cases, zero tests for common/workflow/open |
-| 文档同步 / Doc Sync | 7.0/10 | 本报告 v1.2.23 全面更新，模块文档就位，Nacos 配置文档就位，docs/01~04 仍过时 / This report v1.2.23 fully updated, module/nacos docs in place, docs/01~04 still outdated |
+| 文档同步 / Doc Sync | 7.0/10 | 本报告 v1.2.24 全面更新，模块文档就位，Nacos 配置文档就位，docs/01~04 仍过时 / This report v1.2.24 fully updated, module/nacos docs in place, docs/01~04 still outdated |
 | 运维就绪 / Ops Readiness | 8.0/10 | Docker 编排、链路追踪、限流、Sentinel、Prometheus、API 监控日志全部就位 / Docker, tracing, rate limiting, Sentinel, Prometheus, API monitoring all in place |
 
-### 8.2 本次报告更新（v1.2.23 vs v1.2.10） / Report Updates
+### 8.2 本次报告更新（v1.2.24 vs v1.2.10） / Report Updates
 
 | 更新项 / Update Item | 描述 / Description |
 |------|------|
-| 报告版本号 / Report Version | v1.2.10 → v1.2.23 |
+| 报告版本号 / Report Version | v1.2.10 → v1.2.24 |
 | 代码统计 / Code Statistics | Java 文件 270+ → 291（精确统计 / Precise count） |
 | 模块数 / Module Count | 10（不变） |
 | SQL 脚本 / SQL Scripts | 17 → 22（新增 V92/V93 等 / Added V92/V93 etc.） |

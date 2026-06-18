@@ -158,6 +158,12 @@
             <artifactId>json-path</artifactId>
         </dependency>
 
+        <!-- OpenFeign 声明式 HTTP 客户端 / OpenFeign declarative HTTP client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <!-- Spring Cloud LoadBalancer (OpenFeign fallback) -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

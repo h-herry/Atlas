@@ -50,7 +50,7 @@ public class VmiInventoryService {
     public void checkReplenishment() {
         List<VmiInventory> lowStockList = vmiInventoryMapper.selectList(
                 new LambdaQueryWrapper<VmiInventory>()
-                        .lt(VmiInventory::getCurrentStock, VmiInventory::getMinSafetyStock));
+                        .apply("current_stock < min_safety_stock"));
 
         for (VmiInventory vmi : lowStockList) {
             BigDecimal deficit = vmi.getMinSafetyStock().subtract(vmi.getCurrentStock());
@@ -74,7 +74,7 @@ public class VmiInventoryService {
     public void checkOverstock() {
         List<VmiInventory> overstockList = vmiInventoryMapper.selectList(
                 new LambdaQueryWrapper<VmiInventory>()
-                        .gt(VmiInventory::getCurrentStock, VmiInventory::getMaxStock));
+                        .apply("current_stock > max_stock"));
 
         for (VmiInventory vmi : overstockList) {
             BigDecimal excess = vmi.getCurrentStock().subtract(vmi.getMaxStock());
@@ -198,6 +198,6 @@ public class VmiInventoryService {
     public List<VmiInventory> getLowStockItems() {
         return vmiInventoryMapper.selectList(
                 new LambdaQueryWrapper<VmiInventory>()
-                        .lt(VmiInventory::getCurrentStock, VmiInventory::getMinSafetyStock));
+                        .apply("current_stock < min_safety_stock"));
     }
 }

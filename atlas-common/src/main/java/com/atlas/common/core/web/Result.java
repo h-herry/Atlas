@@ -1,4 +1,4 @@
-package com.atlas.common.web;
+package com.atlas.common.core.web;
 
 import com.atlas.common.core.enums.ErrorCode;
 import lombok.AllArgsConstructor;

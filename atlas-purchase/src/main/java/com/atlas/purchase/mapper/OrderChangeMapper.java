@@ -1,4 +1,4 @@
-package atlas-purchase.com.atlas.purchase.mapper.OrderChangeMapper;
+package com.atlas.purchase.mapper;
 
 import com.atlas.purchase.entity.OrderChange;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

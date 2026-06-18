@@ -1,6 +1,6 @@
 package com.atlas.supplier.config;
 
-import com.atlas.common.security.JwtUtil;
+import com.atlas.common.core.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

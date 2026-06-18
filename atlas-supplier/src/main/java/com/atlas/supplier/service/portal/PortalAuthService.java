@@ -2,7 +2,7 @@ package com.atlas.supplier.service.portal;
 
 import com.atlas.common.core.enums.ErrorCode;
 import com.atlas.common.core.exception.BizException;
-import com.atlas.common.security.JwtUtil;
+import com.atlas.common.core.util.JwtUtil;
 import com.atlas.supplier.dto.portal.SupplierLoginRequest;
 import com.atlas.supplier.dto.portal.SupplierTokenResponse;
 import com.atlas.supplier.entity.Supplier;

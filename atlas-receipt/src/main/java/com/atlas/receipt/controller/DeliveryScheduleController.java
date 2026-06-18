@@ -1,6 +1,6 @@
 package com.atlas.receipt.controller;
 
-import com.atlas.common.core.result.Result;
+import com.atlas.common.core.web.Result;
 import com.atlas.receipt.service.DeliveryScheduleService;
 import com.atlas.receipt.service.DeliveryScheduleService.DailySchedule;
 import com.atlas.receipt.service.DeliveryScheduleService.WeeklySchedule;

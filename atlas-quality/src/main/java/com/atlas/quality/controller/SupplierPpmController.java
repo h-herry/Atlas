@@ -1,6 +1,6 @@
 package com.atlas.quality.controller;
 
-import com.atlas.common.core.result.Result;
+import com.atlas.common.core.web.Result;
 import com.atlas.quality.service.SupplierPpmService;
 import com.atlas.quality.service.SupplierPpmService.PpmResult;
 import lombok.RequiredArgsConstructor;

@@ -4,6 +4,7 @@ import com.atlas.contract.entity.Contract;
 import com.atlas.contract.entity.ContractAlert;
 import com.atlas.contract.mapper.ContractAlertMapper;
 import com.atlas.contract.mapper.ContractMapper;
+import com.atlas.contract.state.ContractStatusEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,11 +87,11 @@ public class ContractAlertService {
     private void markExpiredContracts(LocalDate today) {
         LambdaQueryWrapper<Contract> wrapper = new LambdaQueryWrapper<>();
         wrapper.le(Contract::getExpiredAt, today.minusDays(1))
-               .ne(Contract::getStatus, "EXPIRED");
+               .ne(Contract::getStatus, ContractStatusEnum.EXPIRED.getCode());
         List<Contract> expiredList = contractMapper.selectList(wrapper);
 
         for (Contract contract : expiredList) {
-            contract.setStatus("EXPIRED");
+            contract.setStatus(ContractStatusEnum.EXPIRED.getCode());
             contractMapper.updateById(contract);
         }
         if (!expiredList.isEmpty()) {
@@ -104,7 +105,7 @@ public class ContractAlertService {
     private List<Contract> findContractsExpiringOn(LocalDate date) {
         LambdaQueryWrapper<Contract> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Contract::getExpiredAt, date)
-               .eq(Contract::getStatus, "ACTIVE");
+               .eq(Contract::getStatus, ContractStatusEnum.EXECUTING.getCode());
         return contractMapper.selectList(wrapper);
     }
 
@@ -134,6 +135,6 @@ public class ContractAlertService {
      */
     public boolean isExpired(Long contractId) {
         Contract contract = contractMapper.selectById(contractId);
-        return contract != null && "EXPIRED".equals(contract.getStatus());
+        return contract != null && ContractStatusEnum.EXPIRED.getCode() == contract.getStatus();
     }
 }

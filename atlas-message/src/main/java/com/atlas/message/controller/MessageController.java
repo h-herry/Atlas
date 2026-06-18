@@ -1,6 +1,6 @@
 package com.atlas.message.controller;
 
-import com.atlas.common.web.Result;
+import com.atlas.common.core.web.Result;
 import com.atlas.message.dto.MessageRecord;
 import com.atlas.message.dto.UnreadCountResponse;
 import com.atlas.message.service.MessageService;

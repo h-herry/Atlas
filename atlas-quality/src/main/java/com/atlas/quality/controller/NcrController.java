@@ -1,6 +1,6 @@
 package com.atlas.quality.controller;
 
-import com.atlas.common.core.result.Result;
+import com.atlas.common.core.web.Result;
 import com.atlas.quality.entity.NcrRecord;
 import com.atlas.quality.service.NcrService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

@@ -22,7 +22,8 @@ public enum ContractStatusEnum {
     EXECUTING(6, "执行中", Set.of(7, 8, 9)),         // → 变更中 / 已终止 / 已完成 / → Changing / Terminated / Completed
     CHANGING(7, "变更中", Set.of(6)),                // → 执行中(变更完成) / → Executing (change done)
     TERMINATED(8, "已终止", Set.of()),               // 终态 / Terminal state
-    COMPLETED(9, "已完成", Set.of());                // 终态 / Terminal state
+    COMPLETED(9, "已完成", Set.of()),                // 终态 / Terminal state
+    EXPIRED(10, "已过期", Set.of());                 // 终态 / Terminal state (auto-marked by scheduler)
 
     private final int code;
     private final String desc;

@@ -1,4 +1,4 @@
-package atlas-purchase.com.atlas.purchase.mapper.DeliveryCommitmentMapper;
+package com.atlas.purchase.mapper;
 
 import com.atlas.purchase.entity.DeliveryCommitment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
