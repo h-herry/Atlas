@@ -60,7 +60,7 @@
 
 ## v1.2.10 (2026-06-17)
 
-- SRM 对标甄云四域升级：供应商配额/整改/财务结算/预测协同/竞价大厅/价格库/合同签章/风险预警/供应商推荐/开放平台 / SRM benchmark upgrade: supplier quota, rectification, financial settlement, forecast collaboration, bidding hall, price library, contract signing, risk warning, supplier recommendation, open platform
+- SRM 对标某行业头部平台四域升级：供应商配额/整改/财务结算/预测协同/竞价大厅/价格库/合同签章/风险预警/供应商推荐/开放平台 / SRM benchmark upgrade: supplier quota, rectification, financial settlement, forecast collaboration, bidding hall, price library, contract signing, risk warning, supplier recommendation, open platform
 
 ---
 
