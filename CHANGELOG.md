@@ -5,10 +5,16 @@
 
 ---
 
-## v1.2.30 (2026-06-18)
+## v1.2.401 (2026-06-18)
+
+### 模块合并 / Module Consolidation
+- 模块合并：16→13（message→common / delivery→receipt / order→purchase） / Module consolidation: 16→13
+- 功能扩展：user 并入鉴权、purchase 并入询报价+价格主数据、receipt 并入结算对账+三单匹配 / Feature expansion: user merged into auth, purchase into RFQ+price master, receipt into settlement+3-way match
+- 编译验证：mvn compile BUILD SUCCESS，13/13 模块零错误 / Build verification: BUILD SUCCESS, 13/13 modules 0 errors
+- 报告：12-模块合并与编译验证报告.md / Report: 12-Module Consolidation & Build Verification Report.md
 
 ### 致命 / Fatal
-- 修复三组端口冲突：order(8087)/supplier(8082)、purchase(8084)/delivery(8090)、material(8088)/receipt(8089)，15 模块端口全部唯一 / Fixed 3 port conflicts, all 15 module ports are now globally unique
+- 修复三组端口冲突（后经三组合并精简至13模块） / Fixed 3 port conflicts (later consolidated to 13 modules via 3-way merge)
 
 ### 严重 / Serious
 - 37 处 @Transactional 补 rollbackFor = Exception.class，覆盖受检异常回滚 / Added rollbackFor to 37 @Transactional declarations
@@ -33,7 +39,7 @@
 ### 全量合规检查 / Full Compliance Audit
 - 文档规范合规扫描 (00-文档规范.md)：0 违规 / Documentation compliance scan: 0 violations
 - SQL 迁移版本连续性：V99→V100→V101→V102→V103→V104→V105→V106 全部存在 / SQL migration sequence: all versions present
-- 模块注册一致性：15/15 模块完全对应 / Module registration: 15/15 fully matched
+- 模块注册一致性：13/13 模块完全对应（三组合并后） / Module registration: 13/13 fully matched (post 3-way merge)
 - Entity-Mapper 对应完整性：124 实体全部有对应 Mapper / Entity-Mapper integrity: all 124 entities have corresponding Mappers
 - Controller-Service-Mapper 依赖链：全部完整 / Controller dependency chain: all complete
 - 包名-路径一致性：全部一致 / Package-path consistency: all consistent
@@ -101,7 +107,7 @@
 
 ### 新增模块 / New Modules
 
-- **atlas-message**: WebSocket 实时消息推送、邮件通知、短信通知三通道消息中心 / WebSocket real-time push, email notification, SMS notification triple-channel message center
+- **[已并入 atlas-common]**: WebSocket 实时消息推送、邮件通知、短信通知三通道消息中心 / WebSocket real-time push, email notification, SMS notification triple-channel message center
 
 ### 供应商端门户（atlas-supplier portal 子包） / Supplier Portal (atlas-supplier portal sub-package)
 

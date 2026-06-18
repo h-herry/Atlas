@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Quote Mapper XML -->
+<mapper namespace="com.atlas.purchase.inquiry.mapper.QuoteMapper">
+
+    <resultMap id="BaseResultMap" type="com.atlas.purchase.inquiry.entity.Quote">
+        <id column="id" property="id"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        *
+    </sql>
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Dead Msg Record Mapper XML -->
+<mapper namespace="com.atlas.common.message.mapper.DeadMsgRecordMapper">
+
+    <!-- 基础结果映射 -->
+    <resultMap id="BaseResultMap" type="com.atlas.common.message.model.DeadMsgRecord">
+        <!-- 主键 -->
+        <id column="id" property="id"/>
+        <!-- 通用字段通过 autoMapping 自动映射 -->
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        *
+    </sql>
+
+    <!-- ★ 复杂连表查询区域 - 后续人工补充 ★ -->
+
+</mapper>

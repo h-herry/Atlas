@@ -45,6 +45,14 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: assign_id
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# ==================== 订单子模块 (atlas-order → atlas-purchase.order) ====================
+# JIT 排程相关表 (jit_delivery_schedule) 与供应商-工厂关联表 (supplier_plant_rel)
+# 原属独立数据库 atlas_order，合并后请将对应表迁移至 atlas_purchase 实例
+# Original atlas_order DB tables must be migrated to atlas_purchase instance
 
 knife4j:
   enable: true

@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.atlas</groupId>
         <artifactId>atlas</artifactId>
-        <version>1.2.30</version>
+        <version>1.2.401</version>
     </parent>
 
     <artifactId>atlas-common</artifactId>
@@ -186,6 +186,32 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
+        <!-- JavaMailSender / 邮件发送（消息中心迁移入 common） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <!-- Thymeleaf / 邮件模板渲染（消息中心迁移入 common） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- 阿里云短信 SDK / Alibaba Cloud SMS SDK（消息中心迁移入 common） -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>dysmsapi20170525</artifactId>
+            <version>2.0.24</version>
+        </dependency>
+
+        <!-- 腾讯云 SDK（含 SMS）/ Tencent Cloud SDK (includes SMS)（消息中心迁移入 common） -->
+        <dependency>
+            <groupId>com.tencentcloudapi</groupId>
+            <artifactId>tencentcloud-sdk-java</artifactId>
+            <version>3.1.1105</version>
         </dependency>
     </dependencies>
 </project>

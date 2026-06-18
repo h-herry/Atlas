@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Atlas 收货管理微服务 / Atlas Receipt Management Microservice
@@ -16,8 +17,9 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableAutoDataSourceProxy
+@EnableScheduling
 @ComponentScan(basePackages = {"com.atlas.common", "com.atlas.receipt"})
-@MapperScan("com.atlas.receipt.mapper")
+@MapperScan({"com.atlas.receipt.mapper", "com.atlas.receipt.delivery.mapper"})
 public class ReceiptApplication {
 
     public static void main(String[] args) {

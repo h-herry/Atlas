@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.atlas</groupId>
         <artifactId>atlas</artifactId>
-        <version>1.2.30</version>
+        <version>1.2.401</version>
     </parent>
 
     <artifactId>atlas-receipt</artifactId>
@@ -19,6 +19,10 @@
             <groupId>com.atlas</groupId>
             <artifactId>atlas-common</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
     </dependencies>
 </project>

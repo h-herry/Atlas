@@ -40,7 +40,7 @@ public class ReceiptOutboxService {
      * If MQ send fails and triggers external rollback, the outbox record remains
      * for scheduled retry via {@link #retryPendingMessages()}.
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void saveOutbox(ReceiptOutbox outbox) {
         outboxMapper.insert(outbox);
     }

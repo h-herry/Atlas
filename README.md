@@ -13,20 +13,20 @@ Sprint Boot 3 / Spring Cloud / MyBatis-Plus / Flowable / Redis / WebSocket / MyS
 ## 模块架构 / Modules
 
 | Module | Port | Description |
-|--------|------|-------------|
-| atlas-common | - | 公共基础设施，含 WebSocket 推送、消息模板 / Common infrastructure: WebSocket push, message templates |
-| atlas-gateway | 8080 | API 网关，统一鉴权路由 / API gateway, unified auth & routing |
-| atlas-auth | - | 认证授权，双通道 JWT（企业端 + 供应商端） / Dual-channel JWT auth |
-| atlas-system | - | 系统管理，用户/角色/菜单/字典 / System admin: users, roles, menus, dicts |
-| atlas-material | - | 物料主数据管理 / Material master data |
-| atlas-supplier | - | 供应商管理，含企业端 & 供应商门户端 / Supplier management, enterprise + supplier portal |
-| atlas-inquiry | - | 询报价管理，含竞价大厅 / RFQ management, bidding hall |
-| atlas-order | - | 采购订单管理 / Purchase order management |
-| atlas-delivery | - | 交付物流跟踪 / Delivery & logistics tracking |
-| atlas-settlement | - | 结算对账 / Settlement & reconciliation |
-| atlas-quality | - | 质量检验管理 / Quality inspection |
-| atlas-contract | - | 合同管理，含电子合同签署 / Contract management, e-signature |
-| atlas-message | 8097 | 消息中心，WebSocket + 邮件 + 短信三通道 / Message center, 3-channel notification |
+|--------|:---:|-------------|
+| atlas-common | - | 公共基础设施，含消息中心（WebSocket推送/邮件/短信） / Common infrastructure with messaging (WebSocket/Email/SMS) |
+| atlas-gateway | 8080 | API 网关，统一鉴权路由 / API gateway |
+| atlas-user | 8081 | 用户服务与鉴权，双通道 JWT 认证、人员权限配置 / User service & auth, dual-channel JWT |
+| atlas-supplier | 8082 | 供应商管理，含企业端 & 供应商门户端 / Supplier management, enterprise + supplier portal |
+| atlas-workflow | 8083 | 工作流引擎，Flowable 流程管理 / Workflow engine |
+| atlas-purchase | 8084 | 采购管理，含订单管理/询报价/竞价大厅/价格主数据 / Purchase & order management, RFQ/bidding/price master |
+| atlas-inventory | 8085 | 库存管理 / Inventory management |
+| atlas-contract | 8086 | 合同管理，含电子合同签署 / Contract management, e-signature |
+| atlas-material | 8088 | 物料主数据管理 / Material master data |
+| atlas-receipt | 8089 | 收货管理，含交付物流/结算对账/三单匹配/付款 / Receipt & delivery, settlement/reconciliation/payment |
+| atlas-quality | 8091 | 质量检验管理 / Quality inspection |
+| atlas-system | 8092 | 系统管理，RBAC 权限 / System admin, RBAC |
+| atlas-open | 8098 | 开放平台 / Open API platform |
 
 ## 核心特性 / Key Features
 
@@ -93,7 +93,7 @@ Supplier portal entry: `http://localhost:{port}/portal`
 
 | Version | Date | Highlights |
 |---------|------|------------|
-| v1.2.30 | 2026-06-18 | RBAC权限管理系统：4表/4实体/4Mapper/DataScopeService+DataScopeHelper；atlas-system模块(8092)；三组端口冲突修复，15模块端口全局唯一；37处@Transactional补rollbackFor；21Controller补@RequirePermission；日志脱敏；V107预置数据 / RBAC system, atlas-system module, port conflicts resolved, 37 rollbackFor fixes, 21 Controller permissions, log desensitization |
+| v1.2.401 | 2026-06-18 | 模块合并16→13（message→common / delivery→receipt / order→purchase），user→鉴权/purchase→询报价+价格/receipt→结算+三单；BUILD SUCCESS 13/13；RBAC权限管理系统；atlas-system(8092)；37处@Transactional补rollbackFor；21Controller补@RequirePermission；日志脱敏；V107预置 / Module consolidation 16→13, BUILD SUCCESS 13/13, RBAC system, 37 rollbackFor fixes, 21 Controller permissions, log desensitization |
 | v1.2.24 | 2026-06-18 | 全量合规检查通过：文档规范0违规/完整性校验通过/编译依赖全部修复；新增GoodsMapper/GoodsCategoryMapper/ErrorCode常量/Result.fail(String)；atlas-quality→atlas-material跨模块依赖补全；DeadMsgRecord类型统一；MessageService方法补全 / Full compliance audit passed: 0 spec violations, integrity verified, all compilation errors fixed |
 | v1.2.23 | 2026-06-18 | 技术优化：防重放攻击/敏感脱敏/审计日志/异常标准化/Cache-Aside缓存/复合索引/异步化/健康检查/结构化日志/重试死信/API文档；制造业场景：JIT/VMI/PPAP/多工厂分单/来料追溯；数据库V99-V106共46张新表 / Tech optimization & manufacturing scenarios, DB V99-V106, 46 new tables |
 | v1.2.21 | 2026-06-18 | 供应商门户 + 电子合同 + 三通道消息中心 / Supplier portal, e-contract, 3-channel messaging |
@@ -111,9 +111,9 @@ Supplier portal entry: `http://localhost:{port}/portal`
 | [04-期初数据](docs/04-期初数据.md) | 初始化数据说明 / Initial data |
 | [05-代码分析报告](docs/05-代码分析报告.md) | 代码质量分析 / Code analysis |
 | [06-SRM项目总报告](docs/06-SRM项目总报告.md) | SRM 项目总报告 / SRM report |
-| [07-SRM项目总报告-v1.2.30](docs/07-SRM项目总报告-v1.2.30.md) | v1.2.30 版本报告 / v1.2.30 release report |
-| [08-功能优化建议报告-v1.2.30](docs/08-功能优化建议报告-v1.2.30.md) | 优化建议 / Optimization suggestions |
-| [09-现有模块深度优化建议-v1.2.30](docs/09-现有模块深度优化建议-v1.2.30.md) | 模块深度优化 / Module deep optimization |
+| [07-SRM项目总报告-v1.2.401](docs/07-SRM项目总报告-v1.2.401.md) | v1.2.401 版本报告 / v1.2.401 release report |
+| [08-功能优化建议报告-v1.2.401](docs/08-功能优化建议报告-v1.2.401.md) | 优化建议 / Optimization suggestions |
+| [09-现有模块深度优化建议-v1.2.401](docs/09-现有模块深度优化建议-v1.2.401.md) | 模块深度优化 / Module deep optimization |
 
 ## 许可 / License
 

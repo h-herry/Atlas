@@ -1,0 +1,72 @@
+# Atlas Common — 基础配置（含消息中心迁移入 common 的独有配置）
+# 注意：common 不是独立服务，不配置 server.port
+
+spring:
+  application:
+    name: atlas-common
+
+# MyBatis-Plus 配置 / MyBatis-Plus configuration
+mybatis-plus:
+  type-aliases-package: com.atlas.common.message.model,com.atlas.common.entity
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: assign_id
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT 配置 / JWT configuration
+jwt:
+  secret: ${JWT_SECRET:atlas-jwt-default-secret-key-2024-production-change-in-config}
+  expiration: 7200
+
+# 消息推送配置 / Message push configuration（消息中心迁移入 common）
+message:
+  websocket:
+    heartbeat-interval: 10000
+  history-retention-days: 90
+
+# ============================================================
+# 邮件通道配置 / Mail channel configuration（消息中心迁移入 common）
+# ============================================================
+mail:
+  enabled: true
+  host: ${MAIL_HOST:smtp.example.com}
+  port: ${MAIL_PORT:465}
+  username: ${MAIL_USERNAME:srm-noreply@example.com}
+  password: ${MAIL_PASSWORD:}
+  protocol: smtps
+  from: "SRM系统 <${MAIL_USERNAME:srm-noreply@example.com}>"
+  properties:
+    mail.smtp.auth: true
+    mail.smtp.ssl.enable: true
+
+# ============================================================
+# 短信通道配置 / SMS channel configuration（消息中心迁移入 common）
+# ============================================================
+sms:
+  enabled: ${SMS_ENABLED:false}
+  provider: ${SMS_PROVIDER:aliyun}
+  aliyun:
+    access-key-id: ${ALIYUN_ACCESS_KEY_ID:}
+    access-key-secret: ${ALIYUN_ACCESS_KEY_SECRET:}
+    sign-name: ${SMS_SIGN_NAME:SRM系统}
+    template-codes:
+      supplier-register: ${SMS_TEMPLATE_SUPPLIER_REG:SMS_123456001}
+      supplier-approved: ${SMS_TEMPLATE_SUPPLIER_APPROVED:SMS_123456002}
+      order-created: ${SMS_TEMPLATE_ORDER_CREATED:SMS_123456003}
+      order-delivery: ${SMS_TEMPLATE_ORDER_DELIVERY:SMS_123456004}
+      bidding-invite: ${SMS_TEMPLATE_BIDDING_INVITE:SMS_123456005}
+      bidding-result: ${SMS_TEMPLATE_BIDDING_RESULT:SMS_123456006}
+  tencent:
+    app-id: ${TENCENT_SMS_APP_ID:}
+    app-key: ${TENCENT_SMS_APP_KEY:}
+    sign-name: ${TENCENT_SMS_SIGN_NAME:SRM系统}
+
+# 日志 / Logging
+logging:
+  level:
+    com.atlas.common.message: DEBUG
+    org.springframework.messaging: WARN
+    org.springframework.web.socket: WARN

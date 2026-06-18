@@ -4,8 +4,8 @@
 
 > 审计日期 / Audit Date：2026-06-17
 > 审计方式 / Audit Method：全量文件遍历 + 交叉比对 / Full file traversal + cross-validation
-> 审计范围 / Audit Scope：16 模块 / 585+ Java 文件 / 50+ SQL 脚本 / 7 文档 / 16 modules / 585+ Java files / 50+ SQL scripts / 7 docs
-> 当前版本 / Current Version：v1.2.30
+> 审计范围 / Audit Scope：13 模块 / 585+ Java 文件 / 50+ SQL 脚本 / 7 文档 / 13 modules / 585+ Java files / 50+ SQL scripts / 7 docs
+> 当前版本 / Current Version：v1.2.401
 
 ---
 
@@ -17,7 +17,7 @@
 |------|-----|
 | 项目名称 / Project Name | Atlas 企业采购管理系统 / Atlas Enterprise Procurement Management System |
 | GroupId / ArtifactId | `com.atlas` / `atlas` |
-| 版本 / Version | 1.2.30 |
+| 版本 / Version | 1.2.401 |
 | Java 版本 / Java Version | JDK 17 |
 | 构建工具 / Build Tool | Maven 3.8+ |
 | 代码总行数 / Total LOC | 30,000+ 行（含测试 / incl. tests） |
@@ -85,7 +85,7 @@
 
 **依赖关系 / Dependencies**：所有业务模块仅依赖 `atlas-common`，无模块间循环依赖。purchase 通过 `@LoadBalanced RestTemplate` 调用 inventory。 / All business modules depend only on `atlas-common` with no circular dependencies. Purchase calls inventory via `@LoadBalanced RestTemplate`.
 
-> **v1.2.30 新增模块 / New in v1.2.30**：atlas-system (:8092) RBAC 权限、atlas-order (:8087) 订单调度、atlas-material (:8088) 物料管理、atlas-delivery (:8090) 发货物流、atlas-quality (:8091) 质量管理、atlas-message (:8097) 消息推送。完整 15 业务模块 + gateway 共 16 模块端口全部唯一。详见 docs/01-技术文档.md。
+> **v1.2.401 模块精简 / v1.2.401 Module Consolidation**：三组合并（atlas-order→atlas-purchase, atlas-delivery→atlas-receipt, atlas-message→atlas-common）后精简至 13 模块，12 端口全部唯一。详见 docs/12-模块合并与编译验证报告.md。
 
 ---
 

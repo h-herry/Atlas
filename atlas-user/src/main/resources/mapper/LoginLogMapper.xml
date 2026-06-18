@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- LoginLog Mapper XML -->
+<mapper namespace="com.atlas.user.auth.mapper.LoginLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.atlas.user.auth.entity.LoginLog">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="login_time" property="loginTime"/>
+        <result column="ip" property="ip"/>
+        <result column="result" property="result"/>
+        <result column="fail_reason" property="failReason"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, login_time, ip, result, fail_reason, created_at
+    </sql>
+
+</mapper>
