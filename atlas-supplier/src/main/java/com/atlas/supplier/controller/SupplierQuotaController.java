@@ -8,6 +8,7 @@ import com.atlas.supplier.service.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商配额管理 Controller / Supplier quota management Controller
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/supplier/quota")
 @RequiredArgsConstructor
+@Tag(name = "供应商配额管理 / Supplier Quota")
 public class SupplierQuotaController {
 
     private final SupplierQuotaService quotaService;

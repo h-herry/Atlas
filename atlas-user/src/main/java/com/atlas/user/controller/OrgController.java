@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 组织架构 Controller — 树形查询 / 按类型筛选 /
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/system/org")
 @RequiredArgsConstructor
+@Tag(name = "组织管理 / Organization Management")
 public class OrgController {
 
     private final OrgService orgService;

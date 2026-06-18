@@ -8,7 +8,7 @@
 
 The `atlas-receipt` module handles receipt creation, quality inspection, and confirmed stock-in workflows. It uses an outbox message compensation mechanism to ensure eventual consistency between receipt confirmation and inventory stock-in.
 
-**端口 / Port**：8086 | **数据库 / Database**：atlas_receipt | **文件数 / File count**：10 Java classes
+**端口 / Port**：8089 | **数据库 / Database**：atlas_receipt | **文件数 / File count**：10 Java classes
 
 ---
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 履约管理与条款比对 Controller / Performance management & clause comparison Controller
@@ -26,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/contract")
 @RequiredArgsConstructor
+@Tag(name = "合同履约管理 / Contract Performance Management")
 public class ContractPerformanceController {
 
     private final ContractPerformanceService performanceService;

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 竞价大厅 REST API / Bidding hall REST API
@@ -25,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/bidding-hall")
 @RequiredArgsConstructor
+@Tag(name = "招标大厅 / Bidding Hall")
 public class BiddingHallController {
 
     private final BiddingHallService hallService;

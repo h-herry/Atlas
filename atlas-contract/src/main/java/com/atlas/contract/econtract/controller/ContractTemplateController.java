@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 合同模板管理 Controller / Contract template management Controller
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/contract/template")
 @RequiredArgsConstructor
+@Tag(name = "合同模板管理 / Contract Template Management")
 public class ContractTemplateController {
 
     private final ContractTemplateService templateService;

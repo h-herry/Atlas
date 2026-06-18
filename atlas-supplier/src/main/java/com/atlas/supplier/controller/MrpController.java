@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * MRP 需求计划 Controller / MRP demand planning Controller
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/material/mrp")
 @RequiredArgsConstructor
+@Tag(name = "MRP管理 / MRP Management")
 public class MrpController {
 
     private final MrpService mrpService;

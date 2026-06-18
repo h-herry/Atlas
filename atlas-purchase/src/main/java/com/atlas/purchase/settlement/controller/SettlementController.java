@@ -1,5 +1,6 @@
 package com.atlas.purchase.settlement.controller;
 
+import com.atlas.common.security.annotation.RequirePermission;
 import com.atlas.purchase.settlement.entity.AgingAnalysis;
 import com.atlas.purchase.settlement.entity.SettlementRecon;
 import com.atlas.purchase.settlement.entity.SettlementReconDetail;
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 结算管理 Controller — 三单匹配 / 对账单 / 账龄分析 /
@@ -25,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/settlement")
 @RequiredArgsConstructor
+@Tag(name = "结算管理 / Settlement Management")
 public class SettlementController {
 
     private final ThreeWayMatchService threeWayMatchService;
@@ -39,6 +42,7 @@ public class SettlementController {
      * 执行三单匹配 / Execute three-way match
      */
     @PostMapping("/three-way-match")
+    @RequirePermission("purchase:settlement:manage")
     public ThreeWayMatch executeMatch(@RequestBody Map<String, Object> body) {
         return threeWayMatchService.execute(
                 Long.valueOf(body.get("poId").toString()),
@@ -58,6 +62,7 @@ public class SettlementController {
      * 按PO查询匹配记录 / Query match records by PO
      */
     @GetMapping("/three-way-match/po/{poId}")
+    @RequirePermission("purchase:settlement:view")
     public List<ThreeWayMatch> listMatches(@PathVariable Long poId) {
         return threeWayMatchService.findByPoId(poId);
     }
@@ -66,6 +71,7 @@ public class SettlementController {
      * 人工确认差异 / Manually confirm discrepancy
      */
     @PutMapping("/three-way-match/{matchId}/confirm")
+    @RequirePermission("purchase:settlement:manage")
     public ThreeWayMatch confirmMatch(@PathVariable Long matchId,
                                        @RequestBody Map<String, String> body) {
         return threeWayMatchService.confirm(matchId, body.get("resolution"),
@@ -81,6 +87,7 @@ public class SettlementController {
      * 生成对账单 / Generate reconciliation
      */
     @PostMapping("/recon")
+    @RequirePermission("purchase:settlement:manage")
     public SettlementRecon generate(@RequestBody Map<String, Object> body) {
         return settlementReconService.generate(
                 Long.valueOf(body.get("supplierId").toString()),
@@ -96,6 +103,7 @@ public class SettlementController {
      * 发送给供应商 / Send to supplier
      */
     @PutMapping("/recon/{reconId}/send")
+    @RequirePermission("purchase:settlement:manage")
     public SettlementRecon sendRecon(@PathVariable Long reconId) {
         return settlementReconService.send(reconId);
     }
@@ -104,6 +112,7 @@ public class SettlementController {
      * 供应商确认 / Supplier confirms
      */
     @PutMapping("/recon/{reconId}/confirm")
+    @RequirePermission("purchase:settlement:manage")
     public SettlementRecon confirmRecon(@PathVariable Long reconId,
                                          @RequestBody Map<String, Object> body) {
         return settlementReconService.confirm(reconId,
@@ -114,6 +123,7 @@ public class SettlementController {
      * 供应商提交异议 / Supplier submits dispute
      */
     @PostMapping("/recon/{reconId}/dispute")
+    @RequirePermission("purchase:settlement:manage")
     public void dispute(@PathVariable Long reconId,
                         @RequestBody List<SettlementReconDetail> details) {
         settlementReconService.submitDispute(reconId, details);
@@ -123,6 +133,7 @@ public class SettlementController {
      * 按供应商查对账单 / List recons by supplier
      */
     @GetMapping("/recon/supplier/{supplierId}")
+    @RequirePermission("purchase:settlement:view")
     public List<SettlementRecon> listBySupplier(@PathVariable Long supplierId) {
         return settlementReconService.listBySupplier(supplierId);
     }
@@ -131,6 +142,7 @@ public class SettlementController {
      * 查对账单差异明细 / Query recon discrepancy details
      */
     @GetMapping("/recon/{reconId}/details")
+    @RequirePermission("purchase:settlement:view")
     public List<SettlementReconDetail> listDetails(@PathVariable Long reconId) {
         return settlementReconService.listDetails(reconId);
     }
@@ -144,6 +156,7 @@ public class SettlementController {
      * Query aging analysis by as-of date
      */
     @GetMapping("/aging")
+    @RequirePermission("purchase:settlement:view")
     public List<AgingAnalysis> queryAging(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate asOf) {
         return agingAnalysisService.queryByDate(asOf);
@@ -153,6 +166,7 @@ public class SettlementController {
      * 查询超90天预警 / Query overdue (90+ days) suppliers
      */
     @GetMapping("/aging/overdue")
+    @RequirePermission("purchase:settlement:view")
     public List<AgingAnalysis> listOverdue(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate asOf) {
         return agingAnalysisService.findOverdue(asOf);

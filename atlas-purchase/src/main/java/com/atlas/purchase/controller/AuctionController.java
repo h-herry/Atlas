@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 竞价采购 REST API / Auction procurement REST API
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/purchase/auction")
 @RequiredArgsConstructor
+@Tag(name = "竞价采购管理 / Auction Management")
 public class AuctionController {
 
     private final AuctionService auctionService;

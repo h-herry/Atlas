@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 采购订单管理 REST API / Purchase order management REST API
@@ -28,6 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/purchase")
 @RequiredArgsConstructor
+@Tag(name = "采购订单管理 / Purchase Order Management")
 public class PurchaseController {
 
     private final PurchaseService purchaseService;
@@ -102,7 +104,7 @@ public class PurchaseController {
     @PostMapping("/order/{orderId}/change")
     @RequirePermission("purchase:change")
     @AuditLog(module = "PURCHASE", operation = "CHANGE_CREATE", description = "创建订单变更申请")
-    public Result<OrderChange> createChange(@PathVariable Long orderId, @RequestBody CreateChangeRequest request) {
+    public Result<OrderChange> createChange(@PathVariable Long orderId, @Valid @RequestBody CreateChangeRequest request) {
         OrderChange change = orderChangeService.createChange(
                 orderId, request.getChangeType(), request.getChangeReason(),
                 request.getDetails(), request.getCreatedBy());
@@ -126,7 +128,7 @@ public class PurchaseController {
     @PutMapping("/change/{changeId}/approve")
     @RequirePermission("purchase:change:approve")
     @AuditLog(module = "PURCHASE", operation = "CHANGE_APPROVE", description = "审批变更")
-    public Result<Void> approve(@PathVariable Long changeId, @RequestBody ApproveRequest request) {
+    public Result<Void> approve(@PathVariable Long changeId, @Valid @RequestBody ApproveRequest request) {
         orderChangeService.approve(changeId, request.isApproved(), request.getApprovedBy());
         return Result.ok();
     }

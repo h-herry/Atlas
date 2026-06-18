@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 收货管理 REST API / Receipt management REST API
@@ -26,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/receipt")
 @RequiredArgsConstructor
+@Tag(name = "收货管理 / Receipt Management")
 public class ReceiptController {
 
     private final ReceiptService receiptService;

@@ -1,0 +1,24 @@
+# Atlas Gateway — 测试环境配置 / Test environment configuration
+# version: v1.2.30
+
+debug: true
+
+spring:
+  data:
+    redis:
+      cluster:
+        nodes:
+          - redis-test-1:6379
+          - redis-test-2:6379
+          - redis-test-3:6379
+      password: ${REDIS_PASSWORD:}
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos-test:8848
+        namespace: atlas-test
+
+logging:
+  level:
+    com.atlas: INFO
+    org.springframework.cloud.gateway: INFO

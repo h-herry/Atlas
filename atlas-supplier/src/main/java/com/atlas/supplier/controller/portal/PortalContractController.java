@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 合同管理控制器（供应商端） — 查看合同、在线签署、履约查询、合同预警 /
@@ -20,6 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/portal/contracts")
 @RequiredArgsConstructor
+@Tag(name = "门户合同 / Portal Contract")
 public class PortalContractController {
 
     private final PortalContractService portalContractService;

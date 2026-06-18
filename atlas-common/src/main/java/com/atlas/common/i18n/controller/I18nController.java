@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.atlas.common.i18n.mapper.I18nLanguageMapper;
 import com.atlas.common.i18n.mapper.I18nMessageMapper;
 import com.atlas.common.i18n.service.I18nService;
+import com.atlas.common.security.annotation.RequirePermission;
 import com.atlas.common.web.Result;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * I18n 管理 Controller — 提供语言列表查询、翻译增删改查、缓存刷新
@@ -23,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/i18n")
 @RequiredArgsConstructor
+@Tag(name = "国际化管理 / i18n Management")
 public class I18nController {
 
     private final I18nService i18nService;
@@ -35,6 +38,7 @@ public class I18nController {
      * 获取所有启用的语言列表
      */
     @GetMapping("/languages")
+    @RequirePermission("system:i18n:view")
     public Result<List<Map<String, Object>>> languages() {
         List<Map<String, Object>> languages = i18nMessageMapper.selectEnabledLanguages();
         return Result.ok(languages);
@@ -46,6 +50,7 @@ public class I18nController {
      * 查询单条翻译
      */
     @GetMapping("/messages/{key}")
+    @RequirePermission("system:i18n:view")
     public Result<Map<String, String>> getMessage(@PathVariable String key,
                                                   @RequestParam(defaultValue = "zh-CN") String lang) {
         Map<String, String> data = i18nService.translateAll(null, Locale.forLanguageTag(lang));
@@ -61,6 +66,7 @@ public class I18nController {
      * 按模块导出翻译
      */
     @GetMapping("/messages")
+    @RequirePermission("system:i18n:view")
     public Result<Map<String, String>> exportMessages(@RequestParam String module,
                                                       @RequestParam(defaultValue = "zh-CN") String lang) {
         Map<String, String> messages = i18nService.translateAll(module, Locale.forLanguageTag(lang));
@@ -71,6 +77,7 @@ public class I18nController {
      * 新增/更新单条翻译
      */
     @PostMapping("/messages")
+    @RequirePermission("system:i18n:manage")
     public Result<Void> saveMessage(@Valid @RequestBody I18nMessageRequest request) {
         i18nService.saveOrUpdate(request.getMessageKey(), request.getLanguageCode(), request.getMessageValue());
         log.info("翻译已保存: key={}, lang={}, value={}",
@@ -82,6 +89,7 @@ public class I18nController {
      * 批量导入翻译
      */
     @PostMapping("/messages/batch")
+    @RequirePermission("system:i18n:manage")
     public Result<Void> batchImport(@Valid @RequestBody List<I18nMessageRequest> messages) {
         if (CollUtil.isEmpty(messages)) {
             return Result.ok();
@@ -99,6 +107,7 @@ public class I18nController {
      * 删除某消息键的所有语言翻译
      */
     @DeleteMapping("/messages/{key}")
+    @RequirePermission("system:i18n:manage")
     public Result<Void> deleteMessage(@PathVariable String key) {
         i18nService.deleteKey(key);
         log.info("删除翻译: key={}", key);
@@ -109,6 +118,7 @@ public class I18nController {
      * 刷新所有缓存
      */
     @PostMapping("/messages/refresh")
+    @RequirePermission("system:i18n:manage")
     public Result<Void> refreshCache() {
         i18nService.refreshCache();
         return Result.ok();

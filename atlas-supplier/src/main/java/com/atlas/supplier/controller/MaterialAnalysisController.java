@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 物料分析报表 Controller / Material analysis report Controller
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/material/analysis")
 @RequiredArgsConstructor
+@Tag(name = "物料分析 / Material Analysis")
 public class MaterialAnalysisController {
 
     private final MaterialAnalysisService analysisService;

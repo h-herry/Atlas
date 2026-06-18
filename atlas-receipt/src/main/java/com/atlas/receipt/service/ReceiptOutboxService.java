@@ -4,6 +4,7 @@ import com.atlas.common.mq.producer.AbstractMessageProducer;
 import com.atlas.receipt.entity.ReceiptOutbox;
 import com.atlas.receipt.mapper.ReceiptOutboxMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -50,12 +51,12 @@ public class ReceiptOutboxService {
      */
     @Scheduled(cron = "0 * * * * ?")
     public void retryPendingMessages() {
-        List<ReceiptOutbox> pendingList = outboxMapper.selectList(
+        List<ReceiptOutbox> pendingList = outboxMapper.selectPage(
+                new Page<>(0, 100),
                 new LambdaQueryWrapper<ReceiptOutbox>()
                         .eq(ReceiptOutbox::getStatus, 0)
                         .le(ReceiptOutbox::getNextRetryTime, LocalDateTime.now())
-                        .last("LIMIT 100")
-        );
+        ).getRecords();
 
         for (ReceiptOutbox outbox : pendingList) {
             try {

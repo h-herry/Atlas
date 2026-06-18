@@ -8,6 +8,7 @@ import com.atlas.supplier.service.ProductionProgressService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 生产进度 Controller / Production progress Controller
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/material/progress")
 @RequiredArgsConstructor
+@Tag(name = "生产进度管理 / Production Progress")
 public class ProductionProgressController {
 
     private final ProductionProgressService progressService;

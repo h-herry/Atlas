@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 签署流程管理 Controller / Sign flow management Controller
@@ -24,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/contract/sign")
 @RequiredArgsConstructor
+@Tag(name = "签章流程管理 / Sign Flow Management")
 public class SignFlowController {
 
     private final SignFlowService signFlowService;

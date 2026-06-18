@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 框架协议采购 REST API / Framework agreement procurement REST API
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/framework")
 @RequiredArgsConstructor
+@Tag(name = "框架协议管理 / Framework Agreement Management")
 public class FrameworkController {
 
     private final FrameworkService frameworkService;

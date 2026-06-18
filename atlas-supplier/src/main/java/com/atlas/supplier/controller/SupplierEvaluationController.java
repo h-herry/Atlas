@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商绩效评估 Controller — 评估模板 + 绩效考核 + 整改跟踪 /
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/supplier/eval")
 @RequiredArgsConstructor
+@Tag(name = "供应商评估 / Supplier Evaluation")
 public class SupplierEvaluationController {
 
     private final SupplierEvaluationService evaluationService;

@@ -1,6 +1,7 @@
 package com.atlas.purchase.controller;
 
 import com.atlas.common.core.web.Result;
+import com.atlas.common.security.annotation.RequirePermission;
 import com.atlas.purchase.service.PriceTrendService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,6 +38,7 @@ public class PriceTrendController {
     @GetMapping("/trend")
     @Operation(summary = "查询历史价格趋势 / Query historical price trend")
     @ApiOperationSupport(order = 1)
+    @RequirePermission("purchase:price:view")
     public Result<List<Map<String, Object>>> trend(
             @RequestParam Long materialId,
             @RequestParam(required = false) Long supplierId,
@@ -50,6 +52,7 @@ public class PriceTrendController {
     @GetMapping("/latest/{materialId}")
     @Operation(summary = "获取物料最新价格 / Get latest price for material")
     @ApiOperationSupport(order = 2)
+    @RequirePermission("purchase:price:view")
     public Result<Map<String, Object>> latestPrice(@PathVariable Long materialId) {
         return Result.success(priceTrendService.getLatestPrice(materialId));
     }

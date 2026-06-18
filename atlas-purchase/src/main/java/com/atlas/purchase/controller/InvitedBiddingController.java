@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 邀请招标 REST API / Invited bidding REST API
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/purchase/invited-bidding")
 @RequiredArgsConstructor
+@Tag(name = "邀请招标管理 / Invited Bidding Management")
 public class InvitedBiddingController {
 
     private final InvitedBiddingService invitedBiddingService;

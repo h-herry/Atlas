@@ -3,6 +3,7 @@ package com.atlas.supplier.controller;
 import com.atlas.common.core.web.Result;
 import com.atlas.supplier.entity.MaterialAttrTemplate;
 import com.atlas.supplier.service.MaterialAttrService;
+import com.atlas.common.security.annotation.RequirePermission;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,6 +36,7 @@ public class MaterialAttrController {
     @GetMapping("/category/{categoryId}")
     @Operation(summary = "按分类获取属性模板（含继承） / Get attributes by category (with inheritance)")
     @ApiOperationSupport(order = 1)
+    @RequirePermission("material:attr:view")
     public Result<List<MaterialAttrTemplate>> listByCategory(@PathVariable Long categoryId) {
         return Result.success(materialAttrService.getByCategoryId(categoryId));
     }
@@ -45,6 +47,7 @@ public class MaterialAttrController {
     @PostMapping("/validate/{categoryId}")
     @Operation(summary = "校验属性完整度 / Validate attribute completeness")
     @ApiOperationSupport(order = 2)
+    @RequirePermission("material:attr:view")
     public Result<List<String>> validate(@PathVariable Long categoryId,
                                           @RequestBody Map<String, String> attrValues) {
         return Result.success(materialAttrService.validateAttributes(categoryId, attrValues));
@@ -56,6 +59,7 @@ public class MaterialAttrController {
     @PostMapping
     @Operation(summary = "新增属性模板 / Create attribute template")
     @ApiOperationSupport(order = 3)
+    @RequirePermission("material:attr:manage")
     public Result<MaterialAttrTemplate> create(@RequestBody MaterialAttrTemplate template) {
         return Result.success(materialAttrService.create(template));
     }
@@ -66,6 +70,7 @@ public class MaterialAttrController {
     @PutMapping("/{id}")
     @Operation(summary = "更新属性模板 / Update attribute template")
     @ApiOperationSupport(order = 4)
+    @RequirePermission("material:attr:manage")
     public Result<Void> update(@PathVariable Long id, @RequestBody MaterialAttrTemplate template) {
         template.setId(id);
         materialAttrService.update(template);
@@ -78,6 +83,7 @@ public class MaterialAttrController {
     @DeleteMapping("/{id}")
     @Operation(summary = "删除属性模板 / Delete attribute template")
     @ApiOperationSupport(order = 5)
+    @RequirePermission("material:attr:manage")
     public Result<Void> delete(@PathVariable Long id) {
         materialAttrService.delete(id);
         return Result.success();

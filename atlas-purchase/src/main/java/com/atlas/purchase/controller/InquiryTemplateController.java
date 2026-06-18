@@ -1,6 +1,7 @@
 package com.atlas.purchase.controller;
 
 import com.atlas.common.core.web.Result;
+import com.atlas.common.security.annotation.RequirePermission;
 import com.atlas.purchase.entity.InquiryTemplate;
 import com.atlas.purchase.service.InquiryTemplateService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -34,6 +35,7 @@ public class InquiryTemplateController {
     @PostMapping
     @Operation(summary = "创建询价模板 / Create inquiry template")
     @ApiOperationSupport(order = 1)
+    @RequirePermission("purchase:template:manage")
     public Result<InquiryTemplate> create(@RequestBody InquiryTemplate template) {
         return Result.success(inquiryTemplateService.create(template));
     }
@@ -44,6 +46,7 @@ public class InquiryTemplateController {
     @PutMapping("/{id}")
     @Operation(summary = "更新询价模板 / Update inquiry template")
     @ApiOperationSupport(order = 2)
+    @RequirePermission("purchase:template:manage")
     public Result<Void> update(@PathVariable Long id, @RequestBody InquiryTemplate template) {
         template.setId(id);
         inquiryTemplateService.update(template);
@@ -56,6 +59,7 @@ public class InquiryTemplateController {
     @DeleteMapping("/{id}")
     @Operation(summary = "删除询价模板 / Delete inquiry template")
     @ApiOperationSupport(order = 3)
+    @RequirePermission("purchase:template:manage")
     public Result<Void> delete(@PathVariable Long id) {
         inquiryTemplateService.delete(id);
         return Result.success();
@@ -67,6 +71,7 @@ public class InquiryTemplateController {
     @GetMapping("/{id}")
     @Operation(summary = "询价模板详情 / Inquiry template detail")
     @ApiOperationSupport(order = 4)
+    @RequirePermission("purchase:template:view")
     public Result<InquiryTemplate> detail(@PathVariable Long id) {
         return Result.success(inquiryTemplateService.getById(id));
     }
@@ -77,6 +82,7 @@ public class InquiryTemplateController {
     @GetMapping("/category/{categoryId}")
     @Operation(summary = "按物料分类查询模板 / Query templates by material category")
     @ApiOperationSupport(order = 5)
+    @RequirePermission("purchase:template:view")
     public Result<List<InquiryTemplate>> listByCategory(@PathVariable Long categoryId) {
         return Result.success(inquiryTemplateService.listByCategoryId(categoryId));
     }

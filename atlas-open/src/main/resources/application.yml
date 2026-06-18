@@ -106,9 +106,10 @@ feign:
     enabled: true
 
 server:
-  port: 8090
+  port: 8098
 
 mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
   global-config:
     db-config:
       logic-delete-field: deleted

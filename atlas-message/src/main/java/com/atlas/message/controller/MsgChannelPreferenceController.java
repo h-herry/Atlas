@@ -1,11 +1,13 @@
 package com.atlas.message.controller;
 
+import com.atlas.common.security.annotation.RequirePermission;
 import com.atlas.message.model.MsgChannelPreference;
 import com.atlas.message.service.MsgChannelPreferenceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 消息渠道偏好 Controller — 用户级渠道偏好配置 /
@@ -16,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/message/preference")
 @RequiredArgsConstructor
+@Tag(name = "消息渠道偏好 / Message Channel Preference")
 public class MsgChannelPreferenceController {
 
     private final MsgChannelPreferenceService preferenceService;
@@ -32,6 +35,7 @@ public class MsgChannelPreferenceController {
      * 查询用户所有渠道偏好 / Query all preferences for a user
      */
     @GetMapping("/user/{userId}")
+    @RequirePermission("message:manage")
     public List<MsgChannelPreference> listByUser(@PathVariable Long userId) {
         return preferenceService.listByUser(userId);
     }
@@ -57,6 +61,7 @@ public class MsgChannelPreferenceController {
      * 删除偏好 / Delete preference
      */
     @DeleteMapping("/{prefId}")
+    @RequirePermission("message:manage")
     public void delete(@PathVariable Long prefId) {
         preferenceService.delete(prefId);
     }

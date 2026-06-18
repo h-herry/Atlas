@@ -1,5 +1,6 @@
 package com.atlas.message.controller;
 
+import com.atlas.common.security.annotation.RequirePermission;
 import com.atlas.common.web.Result;
 import com.atlas.message.dto.PushRequest;
 import com.atlas.message.service.MessagePushService;
@@ -52,6 +53,7 @@ public class WebSocketController {
      * 向内部用户推送 / Push to internal user
      */
     @Operation(summary = "向内部用户推送 / Push to internal user")
+    @RequirePermission("message:push")
     @PostMapping("/push/user")
     public Result<Map<String, Object>> pushToUser(@RequestBody PushRequest request) {
         messagePushService.pushToUser(request);

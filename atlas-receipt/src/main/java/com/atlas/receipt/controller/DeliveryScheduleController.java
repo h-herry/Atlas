@@ -4,11 +4,13 @@ import com.atlas.common.core.web.Result;
 import com.atlas.receipt.service.DeliveryScheduleService;
 import com.atlas.receipt.service.DeliveryScheduleService.DailySchedule;
 import com.atlas.receipt.service.DeliveryScheduleService.WeeklySchedule;
+import com.atlas.common.security.annotation.RequirePermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 发货排程看板控制器 / Delivery schedule dashboard controller
@@ -23,6 +25,7 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/delivery/schedule")
 @RequiredArgsConstructor
+@Tag(name = "交货计划管理 / Delivery Schedule Management")
 public class DeliveryScheduleController {
 
     private final DeliveryScheduleService deliveryScheduleService;
@@ -33,6 +36,7 @@ public class DeliveryScheduleController {
      * @param date 日期（不传则默认今天） / Date (defaults to today)
      */
     @GetMapping
+    @RequirePermission("delivery:schedule:view")
     public Result<DailySchedule> daily(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         if (date == null) {
@@ -47,6 +51,7 @@ public class DeliveryScheduleController {
      * @param referenceDate 参考日期（不传则默认本周） / Reference date (defaults to current week)
      */
     @GetMapping("/weekly")
+    @RequirePermission("delivery:schedule:view")
     public Result<WeeklySchedule> weekly(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate referenceDate) {
         return Result.success(deliveryScheduleService.weekly(referenceDate));

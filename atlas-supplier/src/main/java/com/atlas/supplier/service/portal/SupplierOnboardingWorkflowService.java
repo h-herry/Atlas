@@ -110,6 +110,10 @@ public class SupplierOnboardingWorkflowService {
         } catch (Exception e) {
             log.error("启动审批流程失败: applyId={}, error={}", application.getId(), e.getMessage(), e);
             // 流程启动失败不阻塞申请提交，降级为本地状态机 / Process startup failure does not block application submission, fallback to local state machine
+            // 注意：此 catch 有意不重新抛出异常。Flowable 是外部系统无法事务回滚，
+            // 降级模式不影响数据一致性，事务正常提交以保留本地状态 / 
+            // Note: Intentionally not re-throwing. Flowable is an external system with no transaction rollback;
+            // the fallback mode does not compromise data consistency; transaction commits to preserve local state.
             application.setApplyStatus(0); // 待审批 / Pending
             portalRegisterMapper.updateById(application);
             return null;

@@ -39,7 +39,7 @@ public class SupplierEvaluationService {
     /**
      * 创建评估模板 / Create evaluation template
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public EvalTemplate createTemplate(EvalTemplate template) {
         template.setStatus(1);
         evalTemplateMapper.insert(template);
@@ -61,7 +61,7 @@ public class SupplierEvaluationService {
     /**
      * 按模板生成评估（草稿状态） / Generate evaluation by template (draft status)
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SupplierEvaluation createEvaluation(Long supplierId, Long templateId, String evalPeriod, Integer evalType) {
         EvalTemplate template = evalTemplateMapper.selectById(templateId);
         if (template == null) {
@@ -82,7 +82,7 @@ public class SupplierEvaluationService {
     /**
      * 打分 — 提交各维度明细并自动计算总分/定级 / Scoring — submit dimension details and auto-calc total score & grade
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SupplierEvaluation submitScores(Long evaluationId, List<SupplierEvaluationItem> items,
                                            Long evaluatorId, String evaluatorName) {
         SupplierEvaluation evaluation = evaluationMapper.selectById(evaluationId);
@@ -143,7 +143,7 @@ public class SupplierEvaluationService {
     /**
      * 供应商确认评估结果 / Supplier confirms evaluation result
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void confirmEvaluation(Long evaluationId) {
         SupplierEvaluation evaluation = evaluationMapper.selectById(evaluationId);
         if (evaluation == null) {
@@ -160,7 +160,7 @@ public class SupplierEvaluationService {
     /**
      * 整改跟踪 — 发起整改 / 完成整改 / Improvement tracking — start / complete improvement
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void startImprovement(Long evaluationId, String improvementNote, String deadline) {
         SupplierEvaluation evaluation = evaluationMapper.selectById(evaluationId);
         if (evaluation == null) {
@@ -175,7 +175,7 @@ public class SupplierEvaluationService {
         log.info("整改已发起: evalId={}", evaluationId);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void completeImprovement(Long evaluationId) {
         SupplierEvaluation evaluation = evaluationMapper.selectById(evaluationId);
         if (evaluation == null) {

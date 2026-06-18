@@ -3,11 +3,13 @@ package com.atlas.quality.controller;
 import com.atlas.common.core.web.Result;
 import com.atlas.quality.entity.NcrRecord;
 import com.atlas.quality.service.NcrService;
+import com.atlas.common.security.annotation.RequirePermission;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 不合格品处理（NCR）控制器 / Non-Conformance Report (NCR) controller
@@ -18,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/quality/ncr")
 @RequiredArgsConstructor
+@Tag(name = "不合格品管理 / NCR Management")
 public class NcrController {
 
     private final NcrService ncrService;
@@ -26,6 +29,7 @@ public class NcrController {
      * 创建 NCR / Create NCR
      */
     @PostMapping
+    @RequirePermission("quality:ncr:manage")
     public Result<NcrRecord> createNcr(@RequestBody CreateNcrRequest request) {
         NcrRecord ncr = ncrService.createNcr(
                 request.getInspectId(),
@@ -45,6 +49,7 @@ public class NcrController {
      * 处置决策 / Disposition decision
      */
     @PutMapping("/{id}/dispose")
+    @RequirePermission("quality:ncr:manage")
     public Result<Void> dispose(@PathVariable Long id, @RequestBody DisposeRequest request) {
         ncrService.dispose(id, request.getDisposition(), request.getDispositionBy(),
                 request.getDispositionReason(), request.getCorrectiveAction());
@@ -55,6 +60,7 @@ public class NcrController {
      * 闭环 NCR / Close NCR
      */
     @PutMapping("/{id}/close")
+    @RequirePermission("quality:ncr:manage")
     public Result<Void> close(@PathVariable Long id) {
         ncrService.close(id);
         return Result.success();
@@ -64,6 +70,7 @@ public class NcrController {
      * 按 ID 查询 / Query by ID
      */
     @GetMapping("/{id}")
+    @RequirePermission("quality:ncr:view")
     public Result<NcrRecord> getById(@PathVariable Long id) {
         return Result.success(ncrService.getById(id));
     }
@@ -72,6 +79,7 @@ public class NcrController {
      * 分页查询 / Paginated query
      */
     @GetMapping
+    @RequirePermission("quality:ncr:view")
     public Result<Page<NcrRecord>> page(
             @RequestParam(required = false) Long materialId,
             @RequestParam(required = false) Long supplierId,
@@ -86,6 +94,7 @@ public class NcrController {
      * 查询未闭环 NCR / Query open NCRs
      */
     @GetMapping("/open")
+    @RequirePermission("quality:ncr:view")
     public Result<List<NcrRecord>> listOpen() {
         return Result.success(ncrService.listOpen());
     }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * BOM 管理 Controller / BOM management Controller
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/material/bom")
 @RequiredArgsConstructor
+@Tag(name = "BOM管理 / BOM Management")
 public class BomController {
 
     private final BomService bomService;

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 合作创新采购 REST API / Cooperative innovation procurement REST API
@@ -21,6 +22,7 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/api/purchase/cooperative-innovation")
 @RequiredArgsConstructor
+@Tag(name = "合作创新采购 / Cooperative Innovation")
 public class CooperativeInnovationController {
 
     private final CooperativeInnovationService cooperativeInnovationService;

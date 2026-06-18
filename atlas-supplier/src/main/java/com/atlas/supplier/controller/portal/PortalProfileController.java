@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商档案管理控制器（供应商端） — 查看/编辑自家信息、资质上传与管理 /
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/portal/profile")
 @RequiredArgsConstructor
+@Tag(name = "门户档案 / Portal Profile")
 public class PortalProfileController {
 
     private final PortalProfileService portalProfileService;

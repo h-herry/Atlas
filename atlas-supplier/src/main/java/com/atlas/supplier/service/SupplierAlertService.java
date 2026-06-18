@@ -34,7 +34,7 @@ public class SupplierAlertService {
     /**
      * 创建预警规则 / Create alert rule
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AlertRule createRule(AlertRule rule) {
         rule.setIsEnabled(1);
         alertRuleMapper.insert(rule);
@@ -45,7 +45,7 @@ public class SupplierAlertService {
     /**
      * 更新预警规则 / Update alert rule
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AlertRule updateRule(AlertRule rule) {
         AlertRule existing = alertRuleMapper.selectById(rule.getId());
         if (existing == null) {
@@ -58,7 +58,7 @@ public class SupplierAlertService {
     /**
      * 启用/停用预警规则 / Enable or disable alert rule
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void toggleRule(Long ruleId, boolean enabled) {
         AlertRule rule = alertRuleMapper.selectById(ruleId);
         if (rule == null) {
@@ -93,7 +93,7 @@ public class SupplierAlertService {
      * @param alertTitle  预警标题 / Alert title
      * @param alertContent 预警详情 / Alert detail
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AlertRecord generateAlert(Long supplierId, Long ruleId, String alertType,
                                      String alertLevel, String alertTitle, String alertContent) {
         AlertRecord record = new AlertRecord();
@@ -114,7 +114,7 @@ public class SupplierAlertService {
     /**
      * 标记预警已读 / Mark alert as read
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void markRead(Long recordId) {
         AlertRecord record = alertRecordMapper.selectById(recordId);
         if (record != null) {
@@ -126,7 +126,7 @@ public class SupplierAlertService {
     /**
      * 处理预警 — 标记已处理 / Handle alert — mark as handled
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void handleAlert(Long recordId, Long handlerId) {
         AlertRecord record = alertRecordMapper.selectById(recordId);
         if (record != null) {

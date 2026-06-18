@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商准入管理 Controller — 招募公告 + 供应商注册 + 审批流转 /
@@ -20,6 +21,7 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/api/supplier/access")
 @RequiredArgsConstructor
+@Tag(name = "供应商准入管理 / Supplier Access")
 public class SupplierAccessController {
 
     private final SupplierAccessService accessService;

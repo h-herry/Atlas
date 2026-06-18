@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 公开招标 Controller / Open Bidding Controller
@@ -25,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/purchase/open-bidding")
 @RequiredArgsConstructor
+@Tag(name = "公开招标管理 / Open Bidding Management")
 public class OpenBiddingController {
 
     private final OpenBiddingService openBiddingService;

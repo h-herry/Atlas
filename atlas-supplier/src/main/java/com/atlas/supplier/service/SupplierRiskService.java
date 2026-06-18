@@ -35,7 +35,7 @@ public class SupplierRiskService {
     /**
      * 创建风险事件 / Create risk event
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public RiskEvent createRiskEvent(RiskEvent event) {
         event.setStatus(0); // 待处理 / Pending
         event.setOccurTime(event.getOccurTime() != null ? event.getOccurTime() : LocalDateTime.now());
@@ -48,7 +48,7 @@ public class SupplierRiskService {
     /**
      * 处理风险事件 — 开始处理 / Handle risk event — start processing
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void startHandle(Long eventId, Long handlerId, String handlerName) {
         RiskEvent event = riskEventMapper.selectById(eventId);
         if (event == null) {
@@ -64,7 +64,7 @@ public class SupplierRiskService {
     /**
      * 闭环处理 — 标记已解决/已关闭 / Close-loop — mark resolved or closed
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void resolveRisk(Long eventId, Integer targetStatus, String handleResult) {
         RiskEvent event = riskEventMapper.selectById(eventId);
         if (event == null) {
@@ -97,7 +97,7 @@ public class SupplierRiskService {
     /**
      * 加入黑名单 / Add to blacklist
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SupplierBlacklist addToBlacklist(SupplierBlacklist blacklist) {
         // 幂等: 已存在则更新 / Idempotent: throw if already exists
         SupplierBlacklist existing = blacklistMapper.selectOne(
@@ -116,7 +116,7 @@ public class SupplierRiskService {
     /**
      * 解除黑名单（软解除：status=0） / Remove from blacklist (soft removal: status=0)
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void removeFromBlacklist(Long supplierId) {
         SupplierBlacklist blacklist = blacklistMapper.selectOne(
                 new LambdaQueryWrapper<SupplierBlacklist>()

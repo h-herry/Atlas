@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * API 配置管理 Controller — CRUD 管理第三方 API 配置和接口定义 / API configuration management Controller — CRUD for third-party API configs and endpoint definitions
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/open/config")
 @RequiredArgsConstructor
+@Tag(name = "API配置管理 / API Config Management")
 public class ApiConfigController {
 
     private final DynamicApiService dynamicApiService;

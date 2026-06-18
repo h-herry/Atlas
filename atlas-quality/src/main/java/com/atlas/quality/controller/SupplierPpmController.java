@@ -3,12 +3,14 @@ package com.atlas.quality.controller;
 import com.atlas.common.core.web.Result;
 import com.atlas.quality.service.SupplierPpmService;
 import com.atlas.quality.service.SupplierPpmService.PpmResult;
+import com.atlas.common.security.annotation.RequirePermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商质量 PPM 控制器 / Supplier quality PPM controller
@@ -23,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/quality/ppm")
 @RequiredArgsConstructor
+@Tag(name = "供应商PPM管理 / Supplier PPM Management")
 public class SupplierPpmController {
 
     private final SupplierPpmService ppmService;
@@ -35,6 +38,7 @@ public class SupplierPpmController {
      * @param endDate    结束日期 / End date
      */
     @GetMapping("/{supplierId}")
+    @RequirePermission("quality:ppm:view")
     public Result<PpmResult> calculate(
             @PathVariable Long supplierId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -50,6 +54,7 @@ public class SupplierPpmController {
      * @param topN      返回前 N 名 / Top N (default 20)
      */
     @GetMapping("/ranking")
+    @RequirePermission("quality:ppm:view")
     public Result<List<PpmResult>> ranking(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
@@ -64,6 +69,7 @@ public class SupplierPpmController {
      * @param months     最近 N 个月 / Last N months (default 12)
      */
     @GetMapping("/trend/{supplierId}")
+    @RequirePermission("quality:ppm:view")
     public Result<List<PpmResult>> monthlyTrend(
             @PathVariable Long supplierId,
             @RequestParam(defaultValue = "12") int months) {

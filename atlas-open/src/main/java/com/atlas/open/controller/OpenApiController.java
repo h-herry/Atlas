@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 开放平台管理 Controller / Open Platform Management Controller
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/open")
 @RequiredArgsConstructor
+@Tag(name = "开放API / Open API")
 public class OpenApiController {
 
     private final OpenApiService openApiService;

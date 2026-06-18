@@ -9,6 +9,7 @@ import com.atlas.supplier.service.SupplierCollaborationService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商协同管理 Controller — 预测计划 + 发货单 + 对账单 /
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/supplier/collab")
 @RequiredArgsConstructor
+@Tag(name = "供应商协同 / Supplier Collaboration")
 public class SupplierCollaborationController {
 
     private final SupplierCollaborationService collaborationService;

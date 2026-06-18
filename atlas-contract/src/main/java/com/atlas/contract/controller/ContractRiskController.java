@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 合同风险预警 Controller / Contract risk alert Controller
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/contract/risk")
 @RequiredArgsConstructor
+@Tag(name = "合同风险管理 / Contract Risk Management")
 public class ContractRiskController {
 
     private final ContractRiskService riskService;

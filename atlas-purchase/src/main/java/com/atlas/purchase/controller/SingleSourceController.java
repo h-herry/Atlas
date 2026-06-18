@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 单一来源采购 REST API / Single-source procurement REST API
@@ -21,6 +22,7 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/api/purchase/single-source")
 @RequiredArgsConstructor
+@Tag(name = "单一来源采购 / Single Source Procurement")
 public class SingleSourceController {
 
     private final SingleSourceService singleSourceService;

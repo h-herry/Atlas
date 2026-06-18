@@ -47,7 +47,7 @@ public class SmsService {
         String signName = getSignName();
         SmsSendResult result = smsProvider.send(phoneNumber, templateCode, signName, params);
         log.info("短信发送完成: phone={}, templateCode={}, success={}",
-                phoneNumber, templateCode, result.isSuccess());
+                maskPhone(phoneNumber), templateCode, result.isSuccess());
         return result;
     }
 
@@ -81,5 +81,15 @@ public class SmsService {
      */
     private String getSignName() {
         return smsConfig.getAliyun().getSignName();
+    }
+
+    /**
+     * 手机号脱敏：保留前3后4，中间用 **** 替换 / Mask phone number: keep first 3 and last 4 digits
+     */
+    private String maskPhone(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.length() <= 7) {
+            return "***";
+        }
+        return phoneNumber.substring(0, 3) + "****" + phoneNumber.substring(phoneNumber.length() - 4);
     }
 }

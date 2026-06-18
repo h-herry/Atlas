@@ -3,9 +3,11 @@ package com.atlas.quality.controller;
 import com.atlas.common.core.web.Result;
 import com.atlas.quality.entity.InspectionStandard;
 import com.atlas.quality.service.InspectionStandardService;
+import com.atlas.common.security.annotation.RequirePermission;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 检验标准与抽样方案控制器 / Inspection standard & sampling plan controller
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/quality/inspection-standard")
 @RequiredArgsConstructor
+@Tag(name = "检验标准管理 / Inspection Standard Management")
 public class InspectionStandardController {
 
     private final InspectionStandardService standardService;
@@ -24,6 +27,7 @@ public class InspectionStandardController {
      * 创建检验标准 / Create inspection standard
      */
     @PostMapping
+    @RequirePermission("quality:standard:manage")
     public Result<InspectionStandard> create(@RequestBody InspectionStandard standard) {
         return Result.success(standardService.create(standard));
     }
@@ -32,6 +36,7 @@ public class InspectionStandardController {
      * 更新检验标准 / Update inspection standard
      */
     @PutMapping("/{id}")
+    @RequirePermission("quality:standard:manage")
     public Result<Void> update(@PathVariable Long id, @RequestBody InspectionStandard standard) {
         standard.setId(id);
         standardService.update(standard);
@@ -42,6 +47,7 @@ public class InspectionStandardController {
      * 启用/停用标准 / Enable or disable standard
      */
     @PutMapping("/{id}/active")
+    @RequirePermission("quality:standard:manage")
     public Result<Void> toggleActive(@PathVariable Long id, @RequestParam boolean active) {
         standardService.toggleActive(id, active);
         return Result.success();
@@ -51,6 +57,7 @@ public class InspectionStandardController {
      * 按 ID 查询 / Query by ID
      */
     @GetMapping("/{id}")
+    @RequirePermission("quality:standard:view")
     public Result<InspectionStandard> getById(@PathVariable Long id) {
         return Result.success(standardService.getById(id));
     }
@@ -59,6 +66,7 @@ public class InspectionStandardController {
      * 按物料+检验类型查询 / Query by material + inspection type
      */
     @GetMapping("/query")
+    @RequirePermission("quality:standard:view")
     public Result<InspectionStandard> getByMaterialAndType(
             @RequestParam Long materialId,
             @RequestParam String inspectType) {
@@ -69,6 +77,7 @@ public class InspectionStandardController {
      * 分页查询 / Paginated query
      */
     @GetMapping
+    @RequirePermission("quality:standard:view")
     public Result<Page<InspectionStandard>> page(
             @RequestParam(required = false) Long materialId,
             @RequestParam(required = false) String inspectType,

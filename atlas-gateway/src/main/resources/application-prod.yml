@@ -1,0 +1,37 @@
+# Atlas Gateway — 生产环境配置 / Production environment configuration
+# version: v1.2.30
+
+debug: false
+
+spring:
+  data:
+    redis:
+      cluster:
+        nodes:
+          - redis-prod-1:6379
+          - redis-prod-2:6379
+          - redis-prod-3:6379
+          - redis-prod-4:6379
+          - redis-prod-5:6379
+          - redis-prod-6:6379
+      password: ${REDIS_PASSWORD}
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos-prod:8848
+        namespace: atlas-prod
+
+logging:
+  level:
+    com.atlas: WARN
+    org.springframework.cloud.gateway: WARN
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+server:
+  error:
+    include-stacktrace: never

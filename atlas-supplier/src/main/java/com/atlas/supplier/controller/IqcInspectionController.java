@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 来料检验 IQC Controller / Incoming Quality Check (IQC) Controller
@@ -20,6 +21,7 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/api/material/iqc")
 @RequiredArgsConstructor
+@Tag(name = "IQC检验管理 / IQC Inspection Management")
 public class IqcInspectionController {
 
     private final IqcInspectionService inspectionService;

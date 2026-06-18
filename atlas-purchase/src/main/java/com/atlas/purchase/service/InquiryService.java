@@ -204,6 +204,14 @@ public class InquiryService {
         // 计算各供应商得分 / Compute scores for each supplier
         List<Map<String, Object>> rankings = new ArrayList<>();
 
+        // TODO [P2-N+1] compareMultiDimension：computeQualityScore/computeHistoryScore 在循环内逐供应商调用，
+        // 若后续接入 SupplierScorecardService 查询真实得分，将触发 N+1 问题。
+        // 优化方向：批量获取所有供应商的质量+历史得分（如 selectScoreBatch(supplierIds)），
+        // 存入 Map<Long, BigDecimal> 后在循环内直接 get() 取值。
+        // TODO [P2-N+1] compareMultiDimension: computeQualityScore/computeHistoryScore calls per-supplier inside loop;
+        // when integrating SupplierScorecardService for real scores, N+1 query risk will emerge.
+        // Optimization: batch-fetch quality & history scores for all suppliers upfront (e.g. selectScoreBatch(supplierIds)),
+        // store in Map<Long, BigDecimal>, then O(1) lookup inside the loop.
         for (InquirySupplier supplier : suppliers) {
             Map<String, Object> rank = new LinkedHashMap<>();
             rank.put("supplierId", supplier.getSupplierId());

@@ -3,6 +3,7 @@ package com.atlas.supplier.controller;
 import com.atlas.common.core.web.Result;
 import com.atlas.supplier.entity.MaterialCategory;
 import com.atlas.supplier.service.MaterialCategoryService;
+import com.atlas.common.security.annotation.RequirePermission;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,6 +35,7 @@ public class MaterialCategoryController {
     @GetMapping("/tree")
     @Operation(summary = "查询分类树 / Query category tree")
     @ApiOperationSupport(order = 1)
+    @RequirePermission("material:category:view")
     public Result<List<MaterialCategory>> tree() {
         return Result.success(materialCategoryService.listAll());
     }
@@ -44,6 +46,7 @@ public class MaterialCategoryController {
     @GetMapping("/level/{level}")
     @Operation(summary = "按层级查询分类 / Query categories by level (1-4)")
     @ApiOperationSupport(order = 2)
+    @RequirePermission("material:category:view")
     public Result<List<MaterialCategory>> listByLevel(@PathVariable Integer level) {
         return Result.success(materialCategoryService.listByLevel(level));
     }
@@ -54,6 +57,7 @@ public class MaterialCategoryController {
     @GetMapping("/children/{parentId}")
     @Operation(summary = "查询子分类 / Query direct children")
     @ApiOperationSupport(order = 3)
+    @RequirePermission("material:category:view")
     public Result<List<MaterialCategory>> children(@PathVariable Long parentId) {
         return Result.success(materialCategoryService.listChildren(parentId));
     }
@@ -64,6 +68,7 @@ public class MaterialCategoryController {
     @GetMapping("/{id}")
     @Operation(summary = "查询分类详情 / Query category detail")
     @ApiOperationSupport(order = 4)
+    @RequirePermission("material:category:view")
     public Result<MaterialCategory> detail(@PathVariable Long id) {
         return Result.success(materialCategoryService.getById(id));
     }
@@ -74,6 +79,7 @@ public class MaterialCategoryController {
     @PostMapping
     @Operation(summary = "新增物料分类 / Create material category")
     @ApiOperationSupport(order = 5)
+    @RequirePermission("material:category:manage")
     public Result<MaterialCategory> create(@RequestBody MaterialCategory category) {
         return Result.success(materialCategoryService.create(category));
     }
@@ -84,6 +90,7 @@ public class MaterialCategoryController {
     @PutMapping("/{id}")
     @Operation(summary = "更新物料分类 / Update material category")
     @ApiOperationSupport(order = 6)
+    @RequirePermission("material:category:manage")
     public Result<Void> update(@PathVariable Long id, @RequestBody MaterialCategory category) {
         category.setId(id);
         materialCategoryService.update(category);
@@ -96,6 +103,7 @@ public class MaterialCategoryController {
     @PutMapping("/{id}/move")
     @Operation(summary = "移动分类到新父节点 / Move category to new parent")
     @ApiOperationSupport(order = 7)
+    @RequirePermission("material:category:manage")
     public Result<Void> move(@PathVariable Long id, @RequestParam Long newParentId) {
         materialCategoryService.move(id, newParentId);
         return Result.success();
@@ -107,6 +115,7 @@ public class MaterialCategoryController {
     @PutMapping("/{id}/deactivate")
     @Operation(summary = "停用物料分类 / Deactivate material category")
     @ApiOperationSupport(order = 8)
+    @RequirePermission("material:category:manage")
     public Result<Void> deactivate(@PathVariable Long id) {
         materialCategoryService.deactivate(id);
         return Result.success();

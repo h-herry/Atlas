@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.atlas</groupId>
         <artifactId>atlas</artifactId>
-        <version>1.2.10</version>
+        <version>1.2.30</version>
     </parent>
 
     <artifactId>atlas-quality</artifactId>
@@ -28,6 +28,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

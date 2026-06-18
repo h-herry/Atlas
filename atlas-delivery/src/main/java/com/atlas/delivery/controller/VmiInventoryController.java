@@ -6,12 +6,14 @@ import com.atlas.common.web.Result;
 import com.atlas.delivery.entity.VmiInventory;
 import com.atlas.delivery.service.VmiInventoryService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * VMI库存监控 REST API / VMI Inventory Monitoring REST API
@@ -25,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/delivery/vmi")
 @RequiredArgsConstructor
+@Tag(name = "VMI库存管理 / VMI Inventory Management")
 public class VmiInventoryController {
 
     private final VmiInventoryService vmiService;
@@ -100,7 +103,7 @@ public class VmiInventoryController {
      */
     @PostMapping("/inventory")
     @RequirePermission("delivery:vmi:manage")
-    public Result<VmiInventory> save(@RequestBody VmiInventory vmi) {
+    public Result<VmiInventory> save(@Valid @RequestBody VmiInventory vmi) {
         return Result.ok(vmiService.saveOrUpdate(vmi));
     }
 }

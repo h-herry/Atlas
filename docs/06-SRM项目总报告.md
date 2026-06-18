@@ -4,8 +4,8 @@
 
 > 审计日期 / Audit Date：2026-06-17
 > 审计方式 / Audit Method：全量文件遍历 + 交叉比对 / Full file traversal + cross-validation
-> 审计范围 / Audit Scope：10 模块 / 270+ Java 文件 / 17 SQL 脚本 / 6 文档 / 10 modules / 270+ Java files / 17 SQL scripts / 6 docs
-> 当前版本 / Current Version：v1.2.10（基于某行业头部四域对标升级 / Upgraded based on Zhenyun four-domain benchmarking）
+> 审计范围 / Audit Scope：16 模块 / 585+ Java 文件 / 50+ SQL 脚本 / 7 文档 / 16 modules / 585+ Java files / 50+ SQL scripts / 7 docs
+> 当前版本 / Current Version：v1.2.30
 
 ---
 
@@ -17,13 +17,13 @@
 |------|-----|
 | 项目名称 / Project Name | Atlas 企业采购管理系统 / Atlas Enterprise Procurement Management System |
 | GroupId / ArtifactId | `com.atlas` / `atlas` |
-| 版本 / Version | 1.2.10 |
+| 版本 / Version | 1.2.30 |
 | Java 版本 / Java Version | JDK 17 |
 | 构建工具 / Build Tool | Maven 3.8+ |
-| 代码总行数 / Total LOC | 22,000+ 行（含测试 / incl. tests） |
-| Java 文件总数 / Total Java Files | 270+ |
-| SQL 迁移脚本 / SQL Migration Scripts | 17（V1 ~ V17） |
-| 文档 / Documentation | 6 份（含本报告 / incl. this report） |
+| 代码总行数 / Total LOC | 30,000+ 行（含测试 / incl. tests） |
+| Java 文件总数 / Total Java Files | 585+ |
+| SQL 迁移脚本 / SQL Migration Scripts | 50+（V1 ~ V107） |
+| 文档 / Documentation | 7 份（含本报告 / incl. this report） |
 
 ### 1.2 技术栈完整清单 / Complete Tech Stack
 
@@ -58,25 +58,25 @@
               |                |      |                                  |
      +--------v--------+ +---v------v----+ +--------v--------+     +---v--------------+
      |  atlas-user     | |  atlas-supplier | |  atlas-contract  |     |  atlas-purchase  |
-     |  :8081          | |  :8082          | |  :8083           |     |  :8084           |
+     |  :8081          | |  :8082          | |  :8086           |     |  :8084           |
      |  RBAC + JWT     | |  SRM 4 domains  | |  Contract FSM    |     |  9 procurement   |
      |  User/Dept/Role | |  + Materials    | |  Flowable flow   |     |  Bidding+Price   |
      +--------+--------+ +---+----+----+---+ +--------+--------+     +--+-------+------+
               |               |    |    |              |                |       |
      +--------v--------+     | +--v----v--+ +-------v------+  +----v---+ +-v----------+
      |  atlas-common   |<----+-+  Common Infrastructure         |  |atlas-  | |atlas-receipt|
-     |  JWT/Redis/Excp |       |  Security / MQ / Cache /       |  |inventory| |:8086        |
+     |  JWT/Redis/Excp |       |  Security / MQ / Cache /       |  |inventory| |:8089        |
      |  Lock/MQ/Rate/  |       |  Audit / RateLimit / Trace     |  |:8085    | |Receipt+QC   |
      |  Trace           |       +------------------------------+  |Optimistic| |RocketMQ     |
      +-----------------+                                          |Lock      | +------+------+
                                                                   +---------+        |
                                                                              +--------v------+
                                                                              | atlas-workflow |
-                                                                             | :8087          |
+                                                                             | :8083          |
                                                                              | Flowable 7.0   |
                                                                              +----------------+
                                           +---------------------+
-                                          |   atlas-open :8090  |  Open Platform
+                                          |   atlas-open :8098  |  Open Platform
                                           |   RESTful API       |  AppKey/Secret Auth
                                           |   Webhook Events    |  API Call Monitor
                                           |   HMAC-SHA256 Sign  |
@@ -84,6 +84,8 @@
 ```
 
 **依赖关系 / Dependencies**：所有业务模块仅依赖 `atlas-common`，无模块间循环依赖。purchase 通过 `@LoadBalanced RestTemplate` 调用 inventory。 / All business modules depend only on `atlas-common` with no circular dependencies. Purchase calls inventory via `@LoadBalanced RestTemplate`.
+
+> **v1.2.30 新增模块 / New in v1.2.30**：atlas-system (:8092) RBAC 权限、atlas-order (:8087) 订单调度、atlas-material (:8088) 物料管理、atlas-delivery (:8090) 发货物流、atlas-quality (:8091) 质量管理、atlas-message (:8097) 消息推送。完整 15 业务模块 + gateway 共 16 模块端口全部唯一。详见 docs/01-技术文档.md。
 
 ---
 
@@ -350,7 +352,7 @@
 
 | 指标 / Metric | 值 / Value |
 |------|----|
-| Java 文件总数 / Total Java Files | 270+ |
+| Java 文件总数 / Total Java Files | 585+ |
 | 总代码行数 / Total LOC | 22,000+ |
 | public 方法总数（估算）/ Public Methods (est.) | 560+ |
 | `@Transactional` 方法数 / @Transactional Methods | 150+ |
@@ -386,12 +388,12 @@
 | atlas-gateway | 8080 | Gateway | 统一入口，7条路由规则 / Unified entry, 7 route rules |
 | atlas-user | 8081 | 业务服务 / Biz | 用户认证、RBAC权限 |
 | atlas-supplier | 8082 | 业务服务 / Biz | 供应商SRM+物料管理 |
-| atlas-contract | 8083 | 业务服务 / Biz | 合同状态机 |
+| atlas-contract | 8086 | 业务服务 / Biz | 合同状态机 |
 | atlas-purchase | 8084 | 业务服务 / Biz | 9种采购模式 |
 | atlas-inventory | 8085 | 业务服务 / Biz | 库存管理 |
-| atlas-receipt | 8086 | 业务服务 / Biz | 收货质检 |
-| atlas-workflow | 8087 | 业务服务 / Biz | Flowable工作流 |
-| atlas-open | 8090 | 业务服务 / Biz | 开放平台API/Webhook |
+| atlas-receipt | 8089 | 业务服务 / Biz | 收货质检 |
+| atlas-workflow | 8083 | 业务服务 / Biz | Flowable工作流 |
+| atlas-open | 8098 | 业务服务 / Biz | 开放平台API/Webhook |
 
 ### 7.2 外部依赖 / External Dependencies
 

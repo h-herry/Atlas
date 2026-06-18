@@ -8,6 +8,7 @@ import com.atlas.supplier.service.SupplierRiskService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商风险管理 Controller — 风险事件 + 黑名单管理 /
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/supplier/risk")
 @RequiredArgsConstructor
+@Tag(name = "供应商风险管理 / Supplier Risk")
 public class SupplierRiskController {
 
     private final SupplierRiskService riskService;

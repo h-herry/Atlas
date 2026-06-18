@@ -155,6 +155,8 @@ public class MessagePushService {
         Map<String, Object> payload = buildPayload(msg);
         messageTemplate.broadcastToAllSuppliers("/topic/announcement", payload);
 
+        // Redis Pub/Sub 跨实例广播是尽力而为通知，失败不应影响消息持久化主流程 /
+        // Redis Pub/Sub cross-instance broadcast is best-effort; failure must not affect message persistence
         try {
             redisTemplate.convertAndSend(MESSAGE_CHANNEL, payload);
         } catch (Exception e) {
@@ -175,6 +177,8 @@ public class MessagePushService {
             messageTemplate.sendToUser(request.getUserId(), "/queue/message", payload);
         }
 
+        // Redis Pub/Sub 跨实例广播是尽力而为通知，失败不应影响消息持久化主流程 /
+        // Redis Pub/Sub cross-instance broadcast is best-effort; failure must not affect message persistence
         try {
             redisTemplate.convertAndSend(MESSAGE_CHANNEL, payload);
         } catch (Exception e) {
@@ -284,7 +288,7 @@ public class MessagePushService {
                 return; // 成功则退出 / Exit on success
             } catch (Exception e) {
                 log.error("短信发送失败 (重试 {}/{}): phone={}, type={}, title={}",
-                        retry, maxRetries, phone, request.getType(), request.getTitle(), e);
+                        retry, maxRetries, maskPhone(phone), request.getType(), request.getTitle(), e);
 
                 if (retry < maxRetries) {
                     try {
@@ -494,5 +498,16 @@ public class MessagePushService {
             case "SUPPLIER_APPROVED", "APPROVAL" -> SmsTemplateEnum.SMS_SUPPLIER_APPROVED;
             default -> null;
         };
+    }
+
+    /**
+     * 手机号脱敏：保留前3后4，中间替换为**** /
+     * Mask phone number: keep first 3 and last 4 digits, replace middle with ****
+     */
+    private String maskPhone(String phone) {
+        if (phone == null || phone.length() < 7) {
+            return "***";
+        }
+        return phone.substring(0, 3) + "****" + phone.substring(phone.length() - 4);
     }
 }

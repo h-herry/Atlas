@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 物流管理控制器（供应商端） — 发货管理、物流轨迹、延迟通知 /
@@ -24,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/portal/deliveries")
 @RequiredArgsConstructor
+@Tag(name = "门户交付 / Portal Delivery")
 public class PortalDeliveryController {
 
     private final PortalDeliveryService portalDeliveryService;

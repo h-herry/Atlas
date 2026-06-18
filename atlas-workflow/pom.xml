@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.atlas</groupId>
         <artifactId>atlas</artifactId>
-        <version>1.2.10</version>
+        <version>1.2.30</version>
     </parent>
 
     <artifactId>atlas-workflow</artifactId>

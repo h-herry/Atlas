@@ -93,6 +93,7 @@ Supplier portal entry: `http://localhost:{port}/portal`
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| v1.2.30 | 2026-06-18 | RBAC权限管理系统：4表/4实体/4Mapper/DataScopeService+DataScopeHelper；atlas-system模块(8092)；三组端口冲突修复，15模块端口全局唯一；37处@Transactional补rollbackFor；21Controller补@RequirePermission；日志脱敏；V107预置数据 / RBAC system, atlas-system module, port conflicts resolved, 37 rollbackFor fixes, 21 Controller permissions, log desensitization |
 | v1.2.24 | 2026-06-18 | 全量合规检查通过：文档规范0违规/完整性校验通过/编译依赖全部修复；新增GoodsMapper/GoodsCategoryMapper/ErrorCode常量/Result.fail(String)；atlas-quality→atlas-material跨模块依赖补全；DeadMsgRecord类型统一；MessageService方法补全 / Full compliance audit passed: 0 spec violations, integrity verified, all compilation errors fixed |
 | v1.2.23 | 2026-06-18 | 技术优化：防重放攻击/敏感脱敏/审计日志/异常标准化/Cache-Aside缓存/复合索引/异步化/健康检查/结构化日志/重试死信/API文档；制造业场景：JIT/VMI/PPAP/多工厂分单/来料追溯；数据库V99-V106共46张新表 / Tech optimization & manufacturing scenarios, DB V99-V106, 46 new tables |
 | v1.2.21 | 2026-06-18 | 供应商门户 + 电子合同 + 三通道消息中心 / Supplier portal, e-contract, 3-channel messaging |
@@ -110,9 +111,9 @@ Supplier portal entry: `http://localhost:{port}/portal`
 | [04-期初数据](docs/04-期初数据.md) | 初始化数据说明 / Initial data |
 | [05-代码分析报告](docs/05-代码分析报告.md) | 代码质量分析 / Code analysis |
 | [06-SRM项目总报告](docs/06-SRM项目总报告.md) | SRM 项目总报告 / SRM report |
-| [07-SRM项目总报告-v1.2.24](docs/07-SRM项目总报告-v1.2.24.md) | v1.2.24 版本报告 / v1.2.24 release report |
-| [08-功能优化建议报告-v1.2.24](docs/08-功能优化建议报告-v1.2.24.md) | 优化建议 / Optimization suggestions |
-| [09-现有模块深度优化建议-v1.2.24](docs/09-现有模块深度优化建议-v1.2.24.md) | 模块深度优化 / Module deep optimization |
+| [07-SRM项目总报告-v1.2.30](docs/07-SRM项目总报告-v1.2.30.md) | v1.2.30 版本报告 / v1.2.30 release report |
+| [08-功能优化建议报告-v1.2.30](docs/08-功能优化建议报告-v1.2.30.md) | 优化建议 / Optimization suggestions |
+| [09-现有模块深度优化建议-v1.2.30](docs/09-现有模块深度优化建议-v1.2.30.md) | 模块深度优化 / Module deep optimization |
 
 ## 许可 / License
 

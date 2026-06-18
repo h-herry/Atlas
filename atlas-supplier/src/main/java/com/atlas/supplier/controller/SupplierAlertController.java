@@ -8,6 +8,7 @@ import com.atlas.supplier.service.SupplierAlertService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商预警管理 Controller — 预警规则 + 预警记录 /
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/supplier/alert")
 @RequiredArgsConstructor
+@Tag(name = "供应商预警 / Supplier Alert")
 public class SupplierAlertController {
 
     private final SupplierAlertService alertService;

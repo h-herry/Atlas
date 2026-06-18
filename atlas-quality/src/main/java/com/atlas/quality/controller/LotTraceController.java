@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 来料批次追溯 REST API / Incoming Lot Trace REST API
@@ -28,6 +29,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/quality/lot")
 @RequiredArgsConstructor
+@Tag(name = "批次追溯 / Lot Trace")
 public class LotTraceController {
 
     private final LotTraceService lotTraceService;

@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -24,6 +26,11 @@ public class ContractService {
 
     private final ContractMapper contractMapper;
     private final ContractChangeLogMapper changeLogMapper;
+
+    /** 自身代理，用于解决同类方法自调用导致 AOP 失效的问题 */
+    @Lazy
+    @Autowired
+    private ContractService self;
 
     // ============ CRUD ============
 
@@ -44,13 +51,13 @@ public class ContractService {
         return contractMapper.selectById(id);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(Contract contract) {
         contract.setStatus(ContractStatusEnum.DRAFT.getCode());
         return contractMapper.insert(contract) > 0;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean update(Contract contract) {
         Contract old = contractMapper.selectById(contract.getId());
         if (old == null) return false;
@@ -64,7 +71,7 @@ public class ContractService {
      * 状态流转 — 带合法性校验 + 变更日志记录 /
      * State transition — with legality validation + change log recording
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean transition(Long contractId, int targetStatus, Long operatorId, String operatorName) {
         Contract contract = contractMapper.selectById(contractId);
         if (contract == null) {
@@ -98,12 +105,13 @@ public class ContractService {
     /**
      * 驳回 — 可附带驳回原因 / Reject — with optional rejection reason
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public boolean reject(Long contractId, String reason, Long operatorId, String operatorName) {
         Contract contract = contractMapper.selectById(contractId);
         if (contract == null) return false;
         contract.setRejectReason(reason);
         contractMapper.updateById(contract);
-        return transition(contractId, ContractStatusEnum.REJECTED.getCode(), operatorId, operatorName);
+        // 通过注入的自身代理调用，确保 AOP 事务拦截生效 / Use self-proxy to ensure AOP transaction interceptor applies
+        return self.transition(contractId, ContractStatusEnum.REJECTED.getCode(), operatorId, operatorName);
     }
 }

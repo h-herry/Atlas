@@ -39,7 +39,7 @@ public class SupplierCollaborationService {
     /**
      * 发布预测计划 / Publish forecast plan
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ForecastNotice publishForecast(ForecastNotice forecast) {
         forecastNoticeMapper.insert(forecast);
         log.info("预测计划已发布: supplierId={}, period={}", forecast.getSupplierId(), forecast.getForecastPeriod());
@@ -63,7 +63,7 @@ public class SupplierCollaborationService {
     /**
      * 创建发货单（供应商发货） / Create delivery order (supplier shipment)
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public DeliveryOrder createDelivery(DeliveryOrder delivery) {
         delivery.setStatus(0); // 待发货 / Pending
         deliveryOrderMapper.insert(delivery);
@@ -74,7 +74,7 @@ public class SupplierCollaborationService {
     /**
      * 物流追踪 — 更新运输状态 / Logistics tracking — update transport status
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateLogistics(Long deliveryId, String logisticsCompany, String trackingNo, Integer status) {
         DeliveryOrder delivery = deliveryOrderMapper.selectById(deliveryId);
         if (delivery == null) {
@@ -90,7 +90,7 @@ public class SupplierCollaborationService {
     /**
      * 到货确认 / Confirm arrival
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void confirmArrival(Long deliveryId) {
         DeliveryOrder delivery = deliveryOrderMapper.selectById(deliveryId);
         if (delivery == null) {
@@ -122,7 +122,7 @@ public class SupplierCollaborationService {
     /**
      * 生成对账单 / Create reconciliation
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Reconciliation createReconciliation(Reconciliation reconciliation) {
         // 自动计算应付净额 = 采购总额 - 退货总额 / Auto-calc net amount = purchase total - return total
         BigDecimal netAmount = reconciliation.getPurchaseTotal()
@@ -137,7 +137,7 @@ public class SupplierCollaborationService {
     /**
      * 供应商确认对账单 / Supplier confirms reconciliation
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void supplierConfirm(Long reconciliationId, String confirmedBy) {
         Reconciliation reconciliation = reconciliationMapper.selectById(reconciliationId);
         if (reconciliation == null) {
@@ -153,7 +153,7 @@ public class SupplierCollaborationService {
     /**
      * 采购方确认对账单 / Purchaser confirms reconciliation
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void purchaserConfirm(Long reconciliationId, String confirmedBy) {
         Reconciliation reconciliation = reconciliationMapper.selectById(reconciliationId);
         if (reconciliation == null) {
@@ -172,7 +172,7 @@ public class SupplierCollaborationService {
     /**
      * 开票通知（状态流转至已开票） / Mark as invoiced (status → invoiced)
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void markInvoiced(Long reconciliationId) {
         Reconciliation reconciliation = reconciliationMapper.selectById(reconciliationId);
         if (reconciliation == null) {

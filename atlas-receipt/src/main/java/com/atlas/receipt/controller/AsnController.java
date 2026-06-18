@@ -5,12 +5,14 @@ import com.atlas.receipt.entity.AsnItem;
 import com.atlas.receipt.entity.AsnRecord;
 import com.atlas.receipt.service.AsnService;
 import com.atlas.receipt.service.AsnService.AsnItemRequest;
+import com.atlas.common.security.annotation.RequirePermission;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * ASN 预先发货通知控制器 / ASN (Advanced Shipping Notice) controller
@@ -25,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/asn")
 @RequiredArgsConstructor
+@Tag(name = "ASN管理 / ASN Management")
 public class AsnController {
 
     private final AsnService asnService;
@@ -33,6 +36,7 @@ public class AsnController {
      * 供应商创建 ASN / Supplier creates ASN
      */
     @PostMapping
+    @RequirePermission("delivery:asn:manage")
     public Result<AsnRecord> createAsn(@RequestBody CreateAsnRequest request) {
         AsnRecord asn = asnService.createAsn(
                 request.getOrderId(),
@@ -75,6 +79,7 @@ public class AsnController {
      * 更新 ASN 状态 / Update ASN status
      */
     @PutMapping("/{id}/status")
+    @RequirePermission("delivery:asn:manage")
     public Result<Void> updateStatus(@PathVariable Long id, @RequestParam String status) {
         asnService.updateStatus(id, status);
         return Result.success();
@@ -84,6 +89,7 @@ public class AsnController {
      * 分页查询 ASN / Paginated ASN query
      */
     @GetMapping
+    @RequirePermission("delivery:asn:view")
     public Result<Page<AsnRecord>> page(
             @RequestParam(required = false) Long orderId,
             @RequestParam(required = false) Long supplierId,

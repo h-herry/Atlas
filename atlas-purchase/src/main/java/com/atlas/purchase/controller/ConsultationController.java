@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 竞争性磋商 REST API / Competitive consultation REST API
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/consultation")
 @RequiredArgsConstructor
+@Tag(name = "竞争性磋商管理 / Consultation Management")
 public class ConsultationController {
 
     private final ConsultationService consultationService;

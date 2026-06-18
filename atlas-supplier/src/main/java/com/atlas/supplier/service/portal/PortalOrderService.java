@@ -256,7 +256,7 @@ public class PortalOrderService {
      * @param orderId 订单ID / Order ID
      * @param request 订单明细请求 / Order detail request
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void fillOrderDetails(Long orderId, OrderDetailRequest request) {
         Long supplierId = SupplierSecurityConfig.getCurrentSupplierId();
 
@@ -288,7 +288,7 @@ public class PortalOrderService {
      * @param orderId 订单ID / Order ID
      * @param request 生产进度请求 / Production progress request
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateProductionProgress(Long orderId, ProductionProgressRequest request) {
         Long supplierId = SupplierSecurityConfig.getCurrentSupplierId();
 
@@ -330,7 +330,7 @@ public class PortalOrderService {
      * @param orderId 订单ID / Order ID
      * @param request 交期承诺请求 / Delivery commitment request
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void commitDeliveryDate(Long orderId, DeliveryCommitmentRequest request) {
         Long supplierId = SupplierSecurityConfig.getCurrentSupplierId();
 
@@ -366,7 +366,7 @@ public class PortalOrderService {
      * @param orderId 订单ID / Order ID
      * @param request 延迟报备请求 / Delay report request
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void reportDelay(Long orderId, DelayReportRequest request) {
         Long supplierId = SupplierSecurityConfig.getCurrentSupplierId();
 

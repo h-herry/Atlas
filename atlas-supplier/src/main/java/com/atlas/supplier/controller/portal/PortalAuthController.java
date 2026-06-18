@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商认证控制器 — 供应商登录/Token获取/退出/刷新 + 自助注册 /
@@ -29,6 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/portal/auth")
 @RequiredArgsConstructor
+@Tag(name = "门户认证 / Portal Auth")
 public class PortalAuthController {
 
     private final PortalAuthService portalAuthService;

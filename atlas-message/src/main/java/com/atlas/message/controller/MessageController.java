@@ -1,6 +1,7 @@
 package com.atlas.message.controller;
 
 import com.atlas.common.core.web.Result;
+import com.atlas.common.security.annotation.RequirePermission;
 import com.atlas.message.dto.MessageRecord;
 import com.atlas.message.dto.UnreadCountResponse;
 import com.atlas.message.service.MessageService;
@@ -31,6 +32,7 @@ public class MessageController {
      * 分页查询供应商消息 / Paginated query supplier messages
      */
     @Operation(summary = "分页查询消息 / Paginated message query")
+    @RequirePermission("message:view")
     @GetMapping("/supplier/{supplierId}")
     public Result<Page<MessageRecord>> pageBySupplier(
             @PathVariable Long supplierId,
@@ -80,6 +82,7 @@ public class MessageController {
      * 标记单条消息已读 / Mark single message as read
      */
     @Operation(summary = "标记单条消息已读 / Mark single message as read")
+    @RequirePermission("message:update")
     @PutMapping("/{messageId}/read")
     public Result<Boolean> readMessage(@PathVariable Long messageId) {
         return Result.ok(messageService.readMessage(messageId));

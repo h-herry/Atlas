@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商绩效 Controller / Supplier performance Controller
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/material/performance")
 @RequiredArgsConstructor
+@Tag(name = "供应商绩效 / Supplier Performance")
 public class SupplierPerformanceController {
 
     private final SupplierPerformanceService performanceService;

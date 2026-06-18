@@ -90,6 +90,7 @@ public class MessageService {
                 case "SYSTEM" -> response.setSystemUnread(cnt);
                 case "APPROVAL" -> response.setApprovalUnread(cnt);
                 case "QUALITY" -> response.setQualityUnread(cnt);
+                default -> log.warn("未知消息事件类型: {}", type);
             }
         }
         return response;

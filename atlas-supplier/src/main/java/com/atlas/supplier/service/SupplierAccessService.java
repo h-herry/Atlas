@@ -45,7 +45,7 @@ public class SupplierAccessService {
     /**
      * 发布招募公告 / Publish recruit notice
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public RecruitNotice publishNotice(RecruitNotice notice) {
         notice.setStatus(1); // 已发布 / Published
         notice.setPublishTime(LocalDateTime.now());
@@ -69,7 +69,7 @@ public class SupplierAccessService {
     /**
      * 关闭招募公告 / Close recruit notice
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void closeNotice(Long noticeId) {
         RecruitNotice notice = recruitNoticeMapper.selectById(noticeId);
         if (notice == null) {
@@ -84,7 +84,7 @@ public class SupplierAccessService {
     /**
      * 供应商提交注册申请 / Supplier submits registration
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SupplierRegister submitRegister(SupplierRegister register) {
         // 黑名单校验 / Blacklist check
         if (register.getCreditCode() != null) {
@@ -113,7 +113,7 @@ public class SupplierAccessService {
     /**
      * 初审 — 资质审查 / Initial review — qualification check
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void initialReview(Long registerId, Integer result, BigDecimal score,
                               String comment, Long approverId, String approverName, String approverDept) {
         SupplierRegister register = getRegister(registerId);
@@ -139,7 +139,7 @@ public class SupplierAccessService {
     /**
      * 现场考察 / Site inspection
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void fieldInspect(Long registerId, Integer result, BigDecimal score,
                              String comment, Long approverId, String approverName, String approverDept) {
         SupplierRegister register = getRegister(registerId);
@@ -165,7 +165,7 @@ public class SupplierAccessService {
     /**
      * 终审 — 通过后自动入库 / Final review — auto-onboard on approval
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void finalReview(Long registerId, Integer result, BigDecimal score,
                             String comment, Long approverId, String approverName, String approverDept) {
         SupplierRegister register = getRegister(registerId);

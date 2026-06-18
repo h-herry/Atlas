@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 库存管理 REST API / Inventory management REST API
@@ -25,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/inventory")
 @RequiredArgsConstructor
+@Tag(name = "库存管理 / Inventory Management")
 public class InventoryController {
 
     private final InventoryService inventoryService;

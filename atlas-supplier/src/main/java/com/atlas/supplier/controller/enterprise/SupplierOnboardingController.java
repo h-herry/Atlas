@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商入驻控制器（企业端） — 采购员代供应商注册 /
@@ -32,6 +33,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/enterprise/supplier/onboarding")
 @RequiredArgsConstructor
+@Tag(name = "供应商入驻 / Supplier Onboarding")
 public class SupplierOnboardingController {
 
     private final PortalRegisterMapper portalRegisterMapper;

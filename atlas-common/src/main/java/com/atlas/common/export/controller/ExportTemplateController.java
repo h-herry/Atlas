@@ -2,10 +2,12 @@ package com.atlas.common.export.controller;
 
 import com.atlas.common.export.entity.ExportTemplate;
 import com.atlas.common.export.service.ExportService;
+import com.atlas.common.security.annotation.RequirePermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 数据导出模板 Controller — 模板管理 + 按模板导出 /
@@ -16,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/system/export-template")
 @RequiredArgsConstructor
+@Tag(name = "导出模板管理 / Export Template Management")
 public class ExportTemplateController {
 
     private final ExportService exportService;
@@ -40,6 +43,7 @@ public class ExportTemplateController {
      * 按ID查模板 / Get template by ID
      */
     @GetMapping("/{templateId}")
+    @RequirePermission("system:template:view")
     public ExportTemplate getById(@PathVariable Long templateId) {
         return exportService.getTemplateById(templateId);
     }

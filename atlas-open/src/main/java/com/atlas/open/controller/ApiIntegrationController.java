@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * API 集成调用入口 — 动态执行已配置的第三方 API 调用 / API integration entry — dynamically executes configured third-party API calls
@@ -17,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/open/integration")
 @RequiredArgsConstructor
+@Tag(name = "API集成管理 / API Integration Management")
 public class ApiIntegrationController {
 
     private final DynamicApiService dynamicApiService;

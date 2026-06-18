@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 供应商发货协同 Controller / Supplier delivery collaboration Controller
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/material/delivery")
 @RequiredArgsConstructor
+@Tag(name = "供应商交付管理 / Supplier Delivery")
 public class SupplierDeliveryController {
 
     private final SupplierDeliveryService deliveryService;

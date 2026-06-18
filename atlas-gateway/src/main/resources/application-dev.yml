@@ -1,0 +1,21 @@
+# Atlas Gateway — 开发环境配置 / Development environment configuration
+# version: v1.2.30
+
+debug: true
+
+spring:
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password:
+      database: 0
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+logging:
+  level:
+    com.atlas: DEBUG
+    org.springframework.cloud.gateway: DEBUG

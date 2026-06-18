@@ -5,6 +5,29 @@
 
 ---
 
+## v1.2.30 (2026-06-18)
+
+### 致命 / Fatal
+- 修复三组端口冲突：order(8087)/supplier(8082)、purchase(8084)/delivery(8090)、material(8088)/receipt(8089)，15 模块端口全部唯一 / Fixed 3 port conflicts, all 15 module ports are now globally unique
+
+### 严重 / Serious
+- 37 处 @Transactional 补 rollbackFor = Exception.class，覆盖受检异常回滚 / Added rollbackFor to 37 @Transactional declarations
+- ContractService.reject() 自调用事务失效修复，合并到统一事务方法 / Fixed ContractService.reject() self-invocation transaction failure
+
+### 一般 / General
+- MessagePushService 手机号日志脱敏 / Phone number desensitization in MessagePushService logs
+- 21 个 Controller 补 @RequirePermission 注解 / Added @RequirePermission to 21 Controllers
+- MessageService switch 补 default 分支 / Added default branch to MessageService switch
+
+### 新增 / New
+- RBAC 权限管理系统：4 表 + 4 实体 + 4 Mapper + DataScopeService + DataScopeHelper / RBAC permission system
+- atlas-system 模块（端口 8092）：PermController/RoleController/UserRoleController / atlas-system module
+- PermissionAspect 升级：动态 DB 校验 + 通配符 + Redis 缓存 / PermissionAspect upgrade
+- V107 迁移脚本：预置 7 角色 + 30 权限 / V107 migration with preset roles and permissions
+- Bug 扫描报告：docs/11-Bug扫描报告.md / Bug scan report
+
+---
+
 ## v1.2.24 (2026-06-18)
 
 ### 全量合规检查 / Full Compliance Audit

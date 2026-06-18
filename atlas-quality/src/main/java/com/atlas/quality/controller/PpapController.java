@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * PPAP提交跟踪 REST API / PPAP Submission Tracking REST API
@@ -27,6 +28,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/quality/ppap")
 @RequiredArgsConstructor
+@Tag(name = "PPAP管理 / PPAP Management")
 public class PpapController {
 
     private final PpapService ppapService;

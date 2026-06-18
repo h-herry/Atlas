@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 询报价管理控制器（供应商端） — 查看询价单、提交报价、查看中标结果 /
@@ -27,6 +28,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/portal/inquiries")
 @RequiredArgsConstructor
+@Tag(name = "门户询价 / Portal Inquiry")
 public class PortalInquiryController {
 
     private final PortalInquiryService portalInquiryService;

@@ -6,7 +6,7 @@
 
     <groupId>com.atlas</groupId>
     <artifactId>atlas</artifactId>
-    <version>1.2.10</version>
+    <version>1.2.30</version>
     <packaging>pom</packaging>
     <name>Atlas - 企业采购管理系统</name>
     <description>基于 Spring Boot 3.2 + Spring Cloud 2023 的企业采购管理系统</description>
@@ -27,6 +27,7 @@
         <module>atlas-delivery</module>
         <module>atlas-quality</module>
         <module>atlas-material</module>
+        <module>atlas-system</module>
     </modules>
 
     <properties>

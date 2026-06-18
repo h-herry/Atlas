@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 审批工作流 REST API / Approval workflow REST API
@@ -23,6 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/workflow")
 @RequiredArgsConstructor
+@Tag(name = "工作流管理 / Workflow Management")
 public class WorkflowController {
 
     private final WorkflowService workflowService;

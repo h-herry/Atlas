@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * 多工厂分单 REST API / Multi-Plant Order Allocation REST API
@@ -26,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/order/allocation")
 @RequiredArgsConstructor
+@Tag(name = "分配管理 / Allocation Management")
 public class AllocationController {
 
     private final PlantAllocationService allocationService;

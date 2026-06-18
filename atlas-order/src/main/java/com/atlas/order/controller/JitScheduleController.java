@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * JIT 交货排程 REST API / JIT Delivery Schedule REST API
@@ -26,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/order/jit")
 @RequiredArgsConstructor
+@Tag(name = "JIT计划管理 / JIT Schedule Management")
 public class JitScheduleController {
 
     private final JitDeliveryService jitDeliveryService;
