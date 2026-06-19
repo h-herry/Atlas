@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * 结算明细实体 / Settlement item entity
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Data
 @TableName("settlement_item")

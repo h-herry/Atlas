@@ -32,7 +32,7 @@ import java.util.List;
  * Core flow: Receipt confirmed → Generate settlement → Submit → Approve/Reject
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Slf4j
 @Service

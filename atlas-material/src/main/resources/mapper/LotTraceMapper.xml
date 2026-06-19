@@ -5,15 +5,47 @@
 
     <!-- 基础结果映射 -->
     <resultMap id="BaseResultMap" type="com.atlas.material.entity.LotTrace">
-        <!-- 主键 -->
         <id column="id" property="id"/>
-        <!-- 通用字段通过 autoMapping 自动映射 -->
+        <result column="lot_no" property="lotNo"/>
+        <result column="material_id" property="materialId"/>
+        <result column="supplier_id" property="supplierId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="receive_date" property="receiveDate"/>
+        <result column="quantity" property="quantity"/>
+        <result column="status" property="status"/>
+        <result column="inspection_result" property="inspectionResult"/>
+        <result column="inspection_date" property="inspectionDate"/>
+        <result column="rejection_reason" property="rejectionReason"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        *
+        id, lot_no, material_id, supplier_id, order_id, receive_date, quantity,
+        status, inspection_result, inspection_date, rejection_reason, created_at, updated_at
     </sql>
+
+    <!-- 按批次号模糊搜索 -->
+    <select id="selectByLotNo" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM lot_trace
+        WHERE lot_no LIKE CONCAT('%', #{lotNo}, '%')
+    </select>
+
+    <!-- 按物料 ID 查所有关联批次 -->
+    <select id="selectByMaterialId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM lot_trace
+        WHERE material_id = #{materialId}
+    </select>
+
+    <!-- 按状态筛选 -->
+    <select id="selectByStatus" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM lot_trace
+        WHERE status = #{status}
+    </select>
 
     <!-- ★ 复杂连表查询区域 - 后续人工补充 ★ -->
 

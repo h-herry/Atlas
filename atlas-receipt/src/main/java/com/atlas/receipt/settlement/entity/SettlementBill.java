@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * 结算单实体 / Settlement bill entity
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Data
 @TableName("settlement_bill")

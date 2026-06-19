@@ -64,6 +64,9 @@ knife4j:
 logging:
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    com.atlas.user.system: DEBUG
+    com.atlas.common.security: DEBUG
 
 management:
   tracing:

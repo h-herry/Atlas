@@ -1,9 +1,9 @@
-package com.atlas.system.controller;
+package com.atlas.user.system.controller;
 
 import com.atlas.common.core.web.Result;
 import com.atlas.common.entity.SysRole;
 import com.atlas.common.security.annotation.RequirePermission;
-import com.atlas.system.service.RoleService;
+import com.atlas.user.system.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

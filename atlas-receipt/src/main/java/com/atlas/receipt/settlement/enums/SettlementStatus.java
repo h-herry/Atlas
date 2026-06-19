@@ -6,7 +6,7 @@ import lombok.Getter;
  * 结算单状态枚举 / Settlement status enum
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Getter
 public enum SettlementStatus {

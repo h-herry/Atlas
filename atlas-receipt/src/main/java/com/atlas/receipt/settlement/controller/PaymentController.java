@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * 付款管理 REST API / Payment management REST API
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @RestController
 @RequestMapping("/api/payment")

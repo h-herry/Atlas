@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * 对账记录实体 / Reconciliation record entity
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Data
 @TableName("reconciliation_record")

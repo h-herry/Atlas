@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
  * If both parties confirm, status becomes MATCHED; if either party disputes, disputeReason is recorded.
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Slf4j
 @Service

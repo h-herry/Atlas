@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 结算单 Mapper / Settlement bill Mapper
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Mapper
 public interface SettlementBillMapper extends BaseMapper<SettlementBill> {

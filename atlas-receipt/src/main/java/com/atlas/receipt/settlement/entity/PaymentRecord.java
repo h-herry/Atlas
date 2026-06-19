@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * 付款记录实体 / Payment record entity
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Data
 @TableName("payment_record")

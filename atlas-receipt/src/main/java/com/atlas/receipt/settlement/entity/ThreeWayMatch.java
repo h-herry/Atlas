@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * Match dimensions: PO vs Receipt vs Invoice
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Data
 @TableName("three_way_match")

@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 对账记录 Mapper / Reconciliation record Mapper
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Mapper
 public interface ReconciliationRecordMapper extends BaseMapper<ReconciliationRecord> {

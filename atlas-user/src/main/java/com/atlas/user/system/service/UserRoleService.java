@@ -1,4 +1,4 @@
-package com.atlas.system.service;
+package com.atlas.user.system.service;
 
 import com.atlas.common.entity.SysUserRole;
 import com.atlas.common.mapper.SysUserRoleMapper;

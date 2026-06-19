@@ -5,6 +5,21 @@
 
 ---
 
+## v1.2.502 (2026-06-19)
+
+### 合并 / Consolidation
+- atlas-system 合并入 atlas-user：RBAC 权限管理作为 `com.atlas.user.system` 子包运行，端口保持 8081，模块数 13→12 / Merged atlas-system into atlas-user
+- 删除 atlas-system 模块 / Removed atlas-system module
+
+### 新增 / New
+- atlas-material 补充 Mapper + XML 持久层 / Added Mapper + XML persistence layer for atlas-material
+
+### 文档 / Documentation
+- 重新生成四份核心文档（01-技术文档 / 02-系统设计文档 / 03-数据库文档 / 04-项目审计报告）/ Regenerated 4 core docs
+- 重新生成 README.md / Regenerated README.md
+
+---
+
 ## v1.2.401 (2026-06-18)
 
 ### 模块合并 / Module Consolidation

@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 付款记录 Mapper / Payment record Mapper
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Mapper
 public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {

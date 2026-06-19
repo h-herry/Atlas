@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 结算明细 Mapper / Settlement item Mapper
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @Mapper
 public interface SettlementItemMapper extends BaseMapper<SettlementItem> {

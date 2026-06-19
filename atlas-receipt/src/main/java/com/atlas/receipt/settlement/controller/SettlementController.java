@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * 结算管理 REST API / Settlement management REST API
  *
  * @author Atlas Team
- * @since 1.2.401
+ * @since 1.2.502
  */
 @RestController
 @RequestMapping("/api/settlement")

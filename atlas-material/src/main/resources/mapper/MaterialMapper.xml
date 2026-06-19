@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Material Master Data Mapper XML -->
+<mapper namespace="com.atlas.material.mapper.MaterialMapper">
+
+    <!-- 基础结果映射 -->
+    <resultMap id="BaseResultMap" type="com.atlas.material.entity.Material">
+        <id column="id" property="id"/>
+        <result column="material_code" property="materialCode"/>
+        <result column="material_name" property="materialName"/>
+        <result column="min_order_qty" property="minOrderQty"/>
+        <result column="economic_order_qty" property="economicOrderQty"/>
+        <result column="order_qty_multiple" property="orderQtyMultiple"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, material_code, material_name, min_order_qty, economic_order_qty, order_qty_multiple, created_at, updated_at
+    </sql>
+
+    <!-- 按物料编码精确查询 -->
+    <select id="selectByMaterialCode" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM material
+        WHERE material_code = #{materialCode}
+    </select>
+
+    <!-- 按物料名称模糊搜索 -->
+    <select id="selectByMaterialName" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM material
+        WHERE material_name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <!-- ★ 复杂连表查询区域 - 后续人工补充 ★ -->
+
+</mapper>
